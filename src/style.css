@@ -13,6 +13,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  --adventure: #dc0a2d;
+  --action: #363636;
+  --comedy: #1a1a1a;
+  --slice-of-life: #e0e0e0;
+  --drama: #eeeeee;
+  --fantasy: #cfcfcf;
+  --supernatual: #797979;
+  --magic: #28aaff;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
 }
 
 a {
@@ -24,4 +37,102 @@ button {
   background: none;
   border: none;
   outline: none;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: var(--adventure);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  border-bottom: 2px solid var(--comedy);
+  padding: 16px;
+}
+
+#visor-container {
+  display: flex;
+  column-gap: 16px;
+}
+
+#visor-container > img {
+  width: 32px;
+  height: 32px;
+}
+
+#visor-container > div {
+  display: flex;
+  column-gap: 12px;
+}
+
+#visor-container > div img {
+  width: 16px;
+  height: 16px;
+}
+
+section > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--slice-of-life);
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+#search-input {
+  width: 440px;
+  background: var(--drama);
+  border: 2px solid var(--fantasy);
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 14px;
+  color: var(--action);
+  margin-bottom: 16px;
+}
+
+#search-input::placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  color: var(--supernatual);
+}
+
+#search-input:focus {
+  border-color: var(--magic);
+}
+
+#cards-container {
+  overflow: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.card {
+  width: 132px;
+}
+
+.card > img {
+  width: 100%;
+  height: auto;
 }
