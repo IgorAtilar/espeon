@@ -125,7 +125,7 @@ footer {
   column-gap: 32px;
 }
 
-#bottom-nav > ul li > a {
+#bottom-nav > ul .nav-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,7 +142,7 @@ footer {
   color: var(--fantasy);
 }
 
-#bottom-nav-anchor-active {
+#bottom-nav .bottom-nav-anchor-active i[class^='ph'] {
   color: var(--drama);
 }
 
