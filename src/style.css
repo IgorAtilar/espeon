@@ -31,7 +31,7 @@ body {
   height: 100vh;
   width: 100vw;
   background-color: var(--adventure);
-  background-image: url('/assets/pokeball-bg.svg');
+  background-image: url(/assets/pokeball-bg.svg);
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -179,25 +179,24 @@ section {
   height: auto;
 }
 
-.card:hover::before {
-  opacity: 1;
+#loading-container {
+  display: flex;
+  height: max-content;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--slice-of-life);
+  column-gap: 8px;
+  font-size: 20px;
+  text-align: center;
+  transition: all ease 0.2s;
 }
 
-.card::before {
-  content: '';
-  display: flex;
-  border-radius: 12px;
-  background: radial-gradient(
-    800px circle at var(--mouse-x) var(--mouse-y),
-    rgba(255, 255, 255, 0.3),
-    transparent 40%
-  );
-  height: 100%;
-  left: 0;
-  top: 0;
-  width: 100%;
-  position: absolute;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.5s;
+#loading-container > img {
+  width: 42px;
+}
+
+#error-container {
+  color: var(--slice-of-life);
+  font-size: 20px;
 }

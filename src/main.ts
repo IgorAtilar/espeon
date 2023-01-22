@@ -3,16 +3,24 @@ import Tilt from 'vanilla-tilt';
 import { fromFetch } from 'rxjs/fetch';
 import {
   catchError,
-  debounce,
+  debounceTime,
+  EMPTY,
   fromEvent,
-  interval,
   map,
   of,
+  startWith,
   switchMap,
+  tap,
 } from 'rxjs';
 
-const headers = new Headers();
-headers.append('X-Api-Key', import.meta.env.VITE_POKEMON_TCG_API_KEY);
+const isMobile = () => window.innerWidth <= 800;
+
+const getPokemonTCGApiHeaders = () => {
+  const headers = new Headers();
+  headers.append('X-Api-Key', import.meta.env.VITE_POKEMON_TCG_API_KEY);
+
+  return headers;
+};
 
 const searchInput = <HTMLInputElement>document.querySelector('#search-input');
 
@@ -27,18 +35,6 @@ type Card = {
   };
 };
 
-const handleOnCardMouseMove = (e: MouseEvent) => {
-  const { currentTarget } = e;
-
-  const target = currentTarget as HTMLElement;
-  const rect = target.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  target.style.setProperty('--mouse-x', `${x}px`);
-  target.style.setProperty('--mouse-y', `${y}px`);
-};
-
 const createCardElement = (card: Card) => {
   const button = document.createElement('button');
   button.setAttribute('title', card.name);
@@ -50,45 +46,114 @@ const createCardElement = (card: Card) => {
 
   button.appendChild(image);
 
-  Tilt.init(button);
-  button.onmousemove = handleOnCardMouseMove;
-
   return button;
 };
 
-const insertCards = (cards: Card[]) => {
+const clearCardsContainer = () => {
+  const cardsContainer = document.querySelector('#cards-container')!;
+  cardsContainer.innerHTML = '';
+};
+
+const insertPokemonCards = (cards: Card[]) => {
   const cardsContainer = document.querySelector('#cards-container')!;
 
   cards.forEach((card) => {
     const cardElement = createCardElement(card);
     cardsContainer.appendChild(cardElement);
-    Tilt.init(cardElement);
+
+    if (isMobile()) return;
+
+    Tilt.init(cardElement, {
+      glare: true,
+      'max-glare': 0.5,
+    });
   });
+};
+
+const insertLoading = () => {
+  const cardsContainer = document.querySelector('#cards-container')!;
+  cardsContainer.innerHTML = `<div id="loading-container" aria-busy="true">
+  <img src="/assets/espeon.gif" alt="Gif do Pokémon Espeon" />
+  <span>Carregando cartas...</span>
+</div>`;
+};
+
+const insertError = () => {
+  const cardsContainer = document.querySelector('#cards-container')!;
+  cardsContainer.innerHTML = `<div id="error-container">
+  <span
+    >Ops, um erro ocorreu. Tente buscar por outro termo ou tente
+    novamente mais tarde.</span
+  >
+</div>`;
+};
+
+const removeExtraSpaces = (value: string) => value.replace(/\s+/g, ' ').trim();
+
+const getEncodedUrl = (name: string) => {
+  const url = `https://api.pokemontcg.io/v2/cards?q=name:${name}&page=1&pageSize=20`;
+  const encodedUrl = encodeURI(url);
+  return encodedUrl;
 };
 
 input$
   .pipe(
-    map((event) => (<HTMLInputElement>event.target).value),
-    debounce(() => interval(200)),
-    switchMap((name = '') =>
-      fromFetch(
-        `https://api.pokemontcg.io/v2/cards?q=name:${name}&page=1&pageSize=20`,
-        {
-          headers,
-        }
-      ).pipe(
+    map((event) => !!(<HTMLInputElement>event.target).value.length),
+    tap((value) => {
+      if (value) return;
+      clearCardsContainer();
+    })
+  )
+  .subscribe();
+
+const fetchCards = (cardName: string) =>
+  fromFetch(getEncodedUrl(cardName), {
+    headers: getPokemonTCGApiHeaders(),
+  });
+
+type FetchCardsResponse = {
+  error?: boolean;
+  loading?: boolean;
+  data?: Card[];
+};
+
+input$
+  .pipe(
+    map((event) => (<HTMLInputElement>event.target).value || ''),
+    map(removeExtraSpaces),
+    debounceTime(1000),
+    switchMap((cardName) => {
+      if (!cardName) {
+        return EMPTY;
+      }
+      return fetchCards(cardName).pipe(
         switchMap((response) => {
           if (response.ok) {
             return response.json();
-          } else {
-            return of({ error: true, message: `Error ${response.status}` });
           }
+          return of({ error: true });
         }),
-        catchError((err) => {
-          return of({ error: true, message: err.message as string });
+        catchError(() => {
+          return of({ error: true });
+        }),
+        startWith({
+          loading: true,
         })
-      )
-    ),
-    map((response) => (response?.data as Card[]) || [])
+      );
+    })
   )
-  .subscribe(insertCards);
+  .subscribe(({ data, error, loading }: FetchCardsResponse) => {
+    clearCardsContainer();
+
+    if (loading) {
+      insertLoading();
+      return;
+    }
+
+    if (error) {
+      insertError();
+      return;
+    }
+
+    insertPokemonCards(data || []);
+  });
