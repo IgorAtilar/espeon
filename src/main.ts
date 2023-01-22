@@ -1,4 +1,5 @@
 import './style.css';
+import Tilt from 'vanilla-tilt';
 import { fromFetch } from 'rxjs/fetch';
 import {
   catchError,
@@ -26,18 +27,43 @@ type Card = {
   };
 };
 
-const createCardElement = (
-  card: Card
-) => `<button title="${card.name}" class="card">
-<img src="${card.images.large}"  alt="Carta do pokémon ${card.name}"/>
-</button>`;
+const handleOnCardMouseMove = (e: MouseEvent) => {
+  const { currentTarget } = e;
+
+  const target = currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  target.style.setProperty('--mouse-x', `${x}px`);
+  target.style.setProperty('--mouse-y', `${y}px`);
+};
+
+const createCardElement = (card: Card) => {
+  const button = document.createElement('button');
+  button.setAttribute('title', card.name);
+  button.setAttribute('class', 'card');
+
+  const image = document.createElement('img');
+  image.setAttribute('src', card.images.large);
+  image.setAttribute('alt', `Carta do pokémon ${card.name}`);
+
+  button.appendChild(image);
+
+  Tilt.init(button);
+  button.onmousemove = handleOnCardMouseMove;
+
+  return button;
+};
 
 const insertCards = (cards: Card[]) => {
   const cardsContainer = document.querySelector('#cards-container')!;
 
-  const cardsElements = cards.map(createCardElement).join('');
-
-  cardsContainer.innerHTML = cardsElements;
+  cards.forEach((card) => {
+    const cardElement = createCardElement(card);
+    cardsContainer.appendChild(cardElement);
+    Tilt.init(cardElement);
+  });
 };
 
 input$
@@ -45,9 +71,12 @@ input$
     map((event) => (<HTMLInputElement>event.target).value),
     debounce(() => interval(200)),
     switchMap((name = '') =>
-      fromFetch(`https://api.pokemontcg.io/v2/cards?q=name:${name}`, {
-        headers,
-      }).pipe(
+      fromFetch(
+        `https://api.pokemontcg.io/v2/cards?q=name:${name}&page=1&pageSize=20`,
+        {
+          headers,
+        }
+      ).pipe(
         switchMap((response) => {
           if (response.ok) {
             return response.json();

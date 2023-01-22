@@ -1,31 +1,39 @@
 * {
+  font-family: 'Nunito', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   outline: 0;
 }
 
+ul {
+  list-style: none;
+}
+
 :root {
-  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  --adventure: #dc0a2d;
-  --action: #363636;
-  --comedy: #1a1a1a;
-  --slice-of-life: #e0e0e0;
-  --drama: #eeeeee;
-  --fantasy: #cfcfcf;
-  --supernatual: #797979;
-  --magic: #28aaff;
+  --adventure: #242424;
+  --action: #2d2d2d;
+  --comedy: #838383;
+  --slice-of-life: #a7a7a7;
+  --drama: #dc0a2d;
+  --fantasy: #b5273f;
 }
 
 body {
+  display: flex;
+  justify-content: center;
   height: 100vh;
   width: 100vw;
+  background-color: var(--adventure);
+  background-image: url('/assets/pokeball-bg.svg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 a {
@@ -45,94 +53,151 @@ main {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: var(--adventure);
+  max-width: 1280px;
 }
 
 header {
+  position: sticky;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 64px;
-  border-bottom: 2px solid var(--comedy);
-  padding: 16px;
+  padding: 12px;
+  background-color: var(--adventure);
 }
 
-#visor-container {
+#search-input-container {
   display: flex;
-  column-gap: 16px;
-}
-
-#visor-container > img {
-  width: 32px;
-  height: 32px;
-}
-
-#visor-container > div {
-  display: flex;
-  column-gap: 12px;
-}
-
-#visor-container > div img {
-  width: 16px;
-  height: 16px;
-}
-
-section > div {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  max-width: 540px;
   align-items: center;
-  background: var(--slice-of-life);
-  width: 100%;
-  height: 100%;
+  column-gap: 8px;
+  background: var(--action);
   border-radius: 8px;
-  padding: 16px;
+  padding: 8px;
+  border: 1px solid transparent;
+  transition: all ease 0.2s;
 }
 
-section {
-  width: 100%;
-  height: 100%;
-  padding: 20px;
+#search-input-container:focus-within {
+  border: 1px solid var(--slice-of-life);
+}
+
+#search-input-container > i {
+  font-size: 20px;
+  color: var(--comedy);
+  transition: all ease 0.2s;
+}
+
+#search-input-container:focus-within > i {
+  color: var(--slice-of-life);
 }
 
 #search-input {
-  width: 440px;
-  background: var(--drama);
-  border: 2px solid var(--fantasy);
-  border-radius: 5px;
-  padding: 8px;
+  background: transparent;
   font-size: 14px;
-  color: var(--action);
-  margin-bottom: 16px;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  caret-color: var(--comedy);
+  color: var(--slice-of-life);
 }
 
 #search-input::placeholder {
-  font-weight: 400;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  color: var(--supernatual);
+  color: var(--comedy);
 }
 
-#search-input:focus {
-  border-color: var(--magic);
+footer {
+  position: sticky;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px;
+  background-color: var(--adventure);
+}
+
+#bottom-nav > ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 32px;
+}
+
+#bottom-nav > ul li > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#bottom-nav i[class^='ph'] {
+  font-size: 24px;
+  color: var(--slice-of-life);
+  transition: all ease 0.2s;
+  cursor: pointer;
+}
+
+#bottom-nav i[class^='ph']:hover {
+  color: var(--fantasy);
+}
+
+#bottom-nav-anchor-active {
+  color: var(--drama);
+}
+
+section {
+  display: flex;
+  flex: 1;
+  padding: 12px;
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 #cards-container {
-  overflow: auto;
-  overflow-x: hidden;
   display: flex;
+  justify-content: space-evenly;
   flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 20px;
+  gap: 16px;
   height: 100%;
   width: 100%;
 }
 
 .card {
-  width: 132px;
+  display: flex;
+  width: 250px;
+  position: relative;
+  z-index: 1;
+  border: 2px solid var(--slice-of-life);
+  border-radius: 12px;
+  background: var(--slice-of-life);
 }
 
 .card > img {
+  border-radius: 12px;
   width: 100%;
   height: auto;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card::before {
+  content: '';
+  display: flex;
+  border-radius: 12px;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.3),
+    transparent 40%
+  );
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
