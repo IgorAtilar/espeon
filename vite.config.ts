@@ -11,8 +11,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
-        ajuda: resolve(root, 'ajuda', 'index.html'),
-        deck: resolve(root, 'deck', 'index.html'),
+        ajuda: resolve(root, 'ajuda.html'),
+        deck: resolve(root, 'deck.html'),
       },
     },
     outDir,
