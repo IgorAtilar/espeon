@@ -156,3 +156,10 @@ input$
 
     insertPokemonCards(data || []);
   });
+
+const modal = document.querySelector('dialog')!;
+const modalContainer = document.querySelector('#modal-container')!;
+
+modal.addEventListener('click', () => modal.close());
+
+modalContainer.addEventListener('click', (event) => event.stopPropagation());

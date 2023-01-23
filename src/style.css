@@ -200,3 +200,29 @@ section {
   color: var(--slice-of-life);
   font-size: 20px;
 }
+
+dialog {
+  position: relative;
+  background-color: transparent;
+  margin: 0 auto;
+  min-width: 100vw;
+  min-height: 100vh;
+  border: none;
+  background: transparent;
+  backdrop-filter: blur(4px);
+}
+
+#modal-container {
+  position: absolute;
+  width: 90%;
+  max-width: 1080px;
+  height: 80vh;
+  left: 50%;
+  top: 50%;
+  padding: 12px;
+  transform: translate(-50%, -50%);
+  background: var(--adventure);
+  border-radius: 16px;
+  background-image: url(/assets/pokeballs-bg.svg);
+  background-position: center;
+}
