@@ -72,7 +72,6 @@ const insertPokemonCards = (cards: Card[]) => {
 const insertLoading = () => {
   const cardsContainer = document.querySelector('#cards-container')!;
   cardsContainer.innerHTML = `<div id="loading-container" aria-busy="true">
-  <img src="/assets/espeon.gif" alt="Gif do Pokémon Espeon" />
   <span>Carregando cartas...</span>
 </div>`;
 };

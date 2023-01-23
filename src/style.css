@@ -34,6 +34,7 @@ body {
   background-image: url(/assets/pokeball-bg.svg);
   background-repeat: no-repeat;
   background-position: center;
+  color: var(--slice-of-life);
 }
 
 a {
@@ -180,24 +181,10 @@ section {
 }
 
 #loading-container {
-  display: flex;
-  height: max-content;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--slice-of-life);
-  column-gap: 8px;
   font-size: 20px;
-  text-align: center;
-  transition: all ease 0.2s;
-}
-
-#loading-container > img {
-  width: 42px;
 }
 
 #error-container {
-  color: var(--slice-of-life);
   font-size: 20px;
 }
 
