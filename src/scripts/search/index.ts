@@ -11,7 +11,7 @@ import {
 } from 'rxjs';
 import { createElement, isMobile } from '../helpers/dom';
 import { removeExtraSpaces } from '../helpers/string';
-import { Card } from '../entities/Card';
+import { Card, Type } from '../entities/Card';
 import { getCards } from '../api';
 import { mapCardResponseToCard } from '../helpers/entities';
 import pokeballBgURL from '../../assets/pokeball-bg.svg';
@@ -23,6 +23,27 @@ const cardsContainer = document.querySelector('#cards-container')!;
 const pokeballBackgroundContainer = document.querySelector(
   '#background-container'
 )!;
+const modal = document.querySelector('dialog')!;
+const modalContainer = document.querySelector('#modal-container')!;
+
+const handleShowModal = ({ imageURL, name, types }: Card) => {
+  console.log('types', types);
+  const type = types?.[0] ?? Type.Colorless;
+  modalContainer.className = `modal-${type.toLowerCase()}`;
+
+  modalContainer.innerHTML = ` <div id="modal-header">
+  <button id="modal-close-button" title="Close modal">
+    <i class="ph-x"></i>
+  </button>
+</div>
+<img
+  src="${imageURL}"
+  class="modal-image"
+  alt="Card ${name}"
+/>
+<button id="modal-add-card-button">Add on deck</button>`;
+  modal.showModal();
+};
 
 const page$ = new BehaviorSubject({
   page: 1,
@@ -86,6 +107,7 @@ const clearCardsContainer = () => {
 const insertPokemonCards = (cards: Card[]) => {
   cards.forEach((card, index) => {
     const cardElement = createCardElement(card);
+    cardElement.onclick = () => handleShowModal(card);
     const lastELement = cardsContainer.lastElementChild;
     const isLastCard = cards.length - 1 === index;
 
@@ -174,6 +196,6 @@ result$.subscribe(({ data, loading, error }) => {
     return;
   }
 
-  const cards = data?.cards?.map(mapCardResponseToCard) || [];
+  const cards = data?.cards.map(mapCardResponseToCard) || [];
   insertPokemonCards(cards);
 });

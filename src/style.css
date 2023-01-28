@@ -30,6 +30,17 @@ ul {
   --supernatural: #ffffff;
   --header-height: 62px;
   --footer-height: 56px;
+  --fire: #ff4040;
+  --fighting: #cc7722;
+  --dragon: #c49f1a;
+  --lightning: #ffee00;
+  --grass: #33bb33;
+  --water: #00aaff;
+  --fairy: #e03a83;
+  --psychic: #cc00dd;
+  --darkness: #333333;
+  --metal: #c0c0c0;
+  --colorless: #f0f0f0;
 }
 
 body {
@@ -82,6 +93,10 @@ button {
   background: none;
   border: none;
   outline: none;
+}
+
+button:focus {
+  outline: 1px solid var(--supernatural);
 }
 
 main {
@@ -189,7 +204,7 @@ footer {
   color: var(--drama);
 }
 
-section {
+#content {
   display: flex;
   flex: 1;
   padding: 12px;
@@ -246,27 +261,264 @@ section {
 }
 
 dialog {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   background-color: transparent;
   margin: 0 auto;
   min-width: 100vw;
   min-height: 100vh;
   border: none;
-  background: transparent;
   backdrop-filter: blur(4px);
+  z-index: 9999;
 }
 
 #modal-container {
   position: absolute;
-  width: 90%;
-  max-width: 1080px;
-  height: 80vh;
+  width: 94%;
+  max-width: 380px;
   left: 50%;
   top: 50%;
-  padding: 12px;
   transform: translate(-50%, -50%);
-  background: var(--adventure);
-  border-radius: 16px;
-  background-image: url(/assets/pokeballs-bg.svg);
-  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.modal-image {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 12px;
+  height: auto;
+  animation: loading 1s linear infinite alternate;
+  border: 4px solid;
+}
+
+#modal-header {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+#modal-footer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+#modal-close-button {
+  display: flex;
+  padding: 4px;
+  margin-bottom: 4px;
+  border-radius: 4px;
+}
+
+#modal-add-card-button {
+  display: flex;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#modal-close-button i {
+  font-size: 24px;
+}
+
+/* colorless */
+
+.modal-colorless #modal-close-button {
+  background: var(--colorless);
+  color: var(--darkness);
+}
+
+.modal-colorless #modal-add-card-button {
+  background: var(--colorless);
+  color: var(--darkness);
+}
+
+.modal-colorless .modal-image {
+  border-color: var(--colorless);
+}
+
+/* colorless */
+
+/* darkness*/
+
+.modal-darkness #modal-close-button {
+  background: var(--darkness);
+  color: var(--colorless);
+}
+
+.modal-darkness #modal-add-card-button {
+  background: var(--darkness);
+  color: var(--colorless);
+}
+
+.modal-darkness .modal-image {
+  border-color: var(--darkness);
+}
+
+/* darkness*/
+
+/* dragon */
+
+.modal-dragon #modal-close-button {
+  background: var(--dragon);
+  color: var(--darkness);
+}
+
+.modal-dragon #modal-add-card-button {
+  background: var(--dragon);
+  color: var(--darkness);
+}
+
+.modal-dragon .modal-image {
+  border-color: var(--dragon);
+}
+
+/* dragon */
+
+/* fairy */
+
+.modal-fairy #modal-close-button {
+  background: var(--fairy);
+  color: var(--colorless);
+}
+
+.modal-fairy #modal-add-card-button {
+  background: var(--fairy);
+  color: var(--colorless);
+}
+
+.modal-fairy .modal-image {
+  border-color: var(--fairy);
+}
+
+/* fairy */
+
+/* fighting */
+
+.modal-fighting #modal-close-button {
+  background: var(--fighting);
+  color: var(--colorless);
+}
+
+.modal-fighting #modal-add-card-button {
+  background: var(--fighting);
+  color: var(--colorless);
+}
+
+.modal-fighting .modal-image {
+  border-color: var(--fighting);
+}
+
+/* fighting */
+
+/* fire */
+
+.modal-fire .modal-image {
+  border-color: var(--fire);
+}
+
+.modal-fire #modal-close-button {
+  background: var(--fire);
+  color: var(--colorless);
+}
+
+.modal-fire #modal-add-card-button {
+  background: var(--fire);
+  color: var(--colorless);
+}
+
+/* fire */
+
+/* grass */
+
+.modal-grass .modal-image {
+  border-color: var(--grass);
+}
+
+.modal-grass #modal-close-button {
+  background: var(--grass);
+  color: var(--colorless);
+}
+
+.modal-grass #modal-add-card-button {
+  background: var(--grass);
+  color: var(--colorless);
+}
+
+/* grass */
+
+/* lightning */
+
+.modal-lightning .modal-image {
+  border-color: var(--lightning);
+}
+
+.modal-lightning #modal-close-button {
+  background: var(--lightning);
+  color: var(--darkness);
+}
+
+.modal-lightning #modal-add-card-button {
+  background: var(--lightning);
+  color: var(--darkness);
+}
+/* lightning */
+
+/* metal */
+
+.modal-metal .modal-image {
+  border-color: var(--metal);
+}
+
+.modal-metal #modal-close-button {
+  background: var(--metal);
+  color: var(--darkness);
+}
+
+.modal-metal #modal-add-card-button {
+  background: var(--metal);
+  color: var(--darkness);
+}
+
+/* metal */
+
+/* psychic */
+
+.modal-psychic .modal-image {
+  border-color: var(--psychic);
+}
+
+.modal-psychic #modal-close-button {
+  background: var(--psychic);
+  color: var(--colorless);
+}
+
+.modal-psychic #modal-add-card-button {
+  background: var(--psychic);
+  color: var(--colorless);
+}
+
+/* psychic */
+
+/* water */
+
+.modal-water .modal-image {
+  border-color: var(--water);
+}
+
+.modal-water #modal-close-button {
+  background: var(--water);
+  color: var(--colorless);
+}
+
+.modal-water #modal-add-card-button {
+  background: var(--water);
+  color: var(--colorless);
+}
+
+/* water */

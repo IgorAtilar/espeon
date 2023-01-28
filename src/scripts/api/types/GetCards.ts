@@ -1,3 +1,5 @@
+import { Type } from '../../entities/Card';
+
 export type CardResponse = {
   id: string;
   name: string;
@@ -5,6 +7,7 @@ export type CardResponse = {
     small: string;
     large: string;
   };
+  types?: Type[];
 };
 
 export type GetCardsResponse = {
