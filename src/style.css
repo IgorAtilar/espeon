@@ -28,6 +28,8 @@ ul {
   --drama: #dc0a2d;
   --fantasy: #b5273f;
   --supernatural: #ffffff;
+  --header-height: 62px;
+  --footer-height: 56px;
 }
 
 body {
@@ -64,6 +66,7 @@ body {
 
 #background-container img {
   width: 320px;
+  z-index: 0;
 }
 
 .rotation-animation {
@@ -91,12 +94,16 @@ main {
 }
 
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: 12px;
   background-color: var(--adventure);
+  z-index: 2;
 }
 
 #search-input-container {
@@ -142,12 +149,16 @@ header {
 }
 
 footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: 16px;
   background-color: var(--adventure);
+  z-index: 2;
 }
 
 #bottom-nav > ul {
@@ -184,6 +195,9 @@ section {
   padding: 12px;
   overflow: auto;
   overflow-x: hidden;
+  z-index: 1;
+  margin-top: var(--header-height);
+  margin-bottom: var(--footer-height);
 }
 
 #cards-container {
