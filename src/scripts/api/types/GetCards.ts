@@ -8,7 +8,12 @@ export type CardResponse = {
 };
 
 export type GetCardsResponse = {
-  data?: CardResponse[];
+  data?: {
+    cards: CardResponse[];
+    page: number;
+    pageSize: number;
+    totalCount: number;
+  };
   error?: boolean;
   loading?: boolean;
 };

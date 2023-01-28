@@ -1,10 +1,6 @@
 import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import {
-  CardResponse,
-  GetCardsParams,
-  GetCardsResponse,
-} from './types/GetCards';
+import { GetCardsParams, GetCardsResponse } from './types/GetCards';
 
 export const getPokemonApiHeaders = () => {
   const headers = new Headers();
@@ -16,7 +12,7 @@ export const getPokemonApiHeaders = () => {
 export const getCardsUrl = ({
   cardName,
   page = 1,
-  pageSize = 5,
+  pageSize = 20,
 }: GetCardsParams) => {
   const url = `https://api.pokemontcg.io/v2/cards?q=name:${cardName}&page=${page}&pageSize=${pageSize}`;
   const encodedUrl = encodeURI(url);
@@ -39,12 +35,17 @@ export const getCards = ({ cardName, page, pageSize }: GetCardsParams) =>
     startWith({
       loading: true,
     }),
-    map<
-      { data?: CardResponse[]; error?: boolean; loading: boolean },
-      GetCardsResponse
-    >(({ data, error, loading }) => ({
-      data,
-      error,
-      loading,
-    }))
+    map(({ data: cards, error, loading, page, pageSize, totalCount }) => {
+      const result: GetCardsResponse = {
+        data: {
+          cards: cards || [],
+          page,
+          pageSize,
+          totalCount,
+        },
+        error,
+        loading,
+      };
+      return result;
+    })
   );

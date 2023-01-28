@@ -1,5 +1,14 @@
 import Tilt from 'vanilla-tilt';
-import { debounceTime, EMPTY, fromEvent, map, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  fromEvent,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { createElement, isMobile } from '../helpers/dom';
 import { removeExtraSpaces } from '../helpers/string';
 import { Card } from '../entities/Card';
@@ -10,11 +19,34 @@ import pokeballSliceTopURL from '../../assets/pokeball-slice-top.svg';
 import pokeballSliceBottomURL from '../../assets/pokeball-slice-bottom.svg';
 
 const searchInput = <HTMLInputElement>document.querySelector('#search-input');
-const input$ = fromEvent<InputEvent>(searchInput, 'input');
 const cardsContainer = document.querySelector('#cards-container')!;
 const pokeballBackgroundContainer = document.querySelector(
   '#background-container'
 )!;
+
+const page$ = new BehaviorSubject({
+  page: 1,
+});
+
+const totalPages$ = new BehaviorSubject<{ totalPages?: number }>({
+  totalPages: undefined,
+});
+const input$ = fromEvent<InputEvent>(searchInput, 'input');
+
+const intersectionObserver = new IntersectionObserver((entries) => {
+  if (entries.some((entry) => entry.isIntersecting)) {
+    const {
+      value: { page },
+    } = page$;
+    const {
+      value: { totalPages },
+    } = totalPages$;
+
+    if (!totalPages || page < totalPages) {
+      page$.next({ page: page + 1 });
+    }
+  }
+});
 
 const createCardElement = ({ name, imageURL }: Card) => {
   const button = createElement({
@@ -52,8 +84,19 @@ const clearCardsContainer = () => {
 };
 
 const insertPokemonCards = (cards: Card[]) => {
-  cards.forEach((card) => {
+  cards.forEach((card, index) => {
     const cardElement = createCardElement(card);
+    const lastELement = cardsContainer.lastElementChild;
+    const isLastCard = cards.length - 1 === index;
+
+    if (lastELement) {
+      intersectionObserver.unobserve(lastELement);
+    }
+
+    if (isLastCard) {
+      intersectionObserver.observe(cardElement);
+    }
+
     cardsContainer.appendChild(cardElement);
 
     if (isMobile()) return;
@@ -65,8 +108,13 @@ const insertPokemonCards = (cards: Card[]) => {
   });
 };
 
-const insertLoading = () => {
+const handleLoading = (loading?: boolean) => {
   const pokeballBackgroundImage = document.querySelector('#pokeball-bg')!;
+
+  if (!loading) {
+    pokeballBackgroundImage.classList.remove('rotation-animation');
+    return;
+  }
   pokeballBackgroundImage.classList.add('rotation-animation');
 };
 
@@ -99,42 +147,33 @@ const insertError = () => {
   );
 };
 
-input$
-  .pipe(
-    map((event) => !!(<HTMLInputElement>event.target).value.length),
-    tap((value) => {
-      if (value) return;
-      clearCardsContainer();
-    })
-  )
-  .subscribe();
-
-input$
-  .pipe(
-    map((event) => (<HTMLInputElement>event.target).value || ''),
-    map(removeExtraSpaces),
-    debounceTime(1000),
-    switchMap((cardName) => {
-      if (!cardName) {
-        return EMPTY;
-      }
-      return getCards({ cardName });
-    })
-  )
-  .subscribe(({ data, error, loading }) => {
-    clearCardsContainer();
-
-    if (loading) {
-      insertLoading();
-      return;
+const result$ = input$.pipe(
+  map((event) => (<HTMLInputElement>event.target).value || ''),
+  map(removeExtraSpaces),
+  debounceTime(1000),
+  distinctUntilChanged(),
+  tap(clearCardsContainer),
+  filter((cardName) => !!cardName),
+  tap(() => page$.next({ page: 1 })),
+  switchMap((cardName) =>
+    page$.pipe(switchMap(({ page }) => getCards({ cardName, page })))
+  ),
+  tap(({ data }) => {
+    if (data?.totalCount && data?.pageSize) {
+      const totalPages = Math.ceil(data.totalCount / data.pageSize);
+      totalPages$.next({ totalPages });
     }
+  })
+);
 
-    if (error) {
-      insertError();
-      return;
-    }
+result$.subscribe(({ data, loading, error }) => {
+  handleLoading(loading);
 
-    const cards = data?.map(mapCardResponseToCard) || [];
+  if (error) {
+    insertError();
+    return;
+  }
 
-    insertPokemonCards(cards);
-  });
+  const cards = data?.cards?.map(mapCardResponseToCard) || [];
+  insertPokemonCards(cards);
+});
