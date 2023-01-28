@@ -20,12 +20,8 @@ jobs:
           run_install: false
       - name: Install dependencies
         run: pnpm install
-      - name: Build
-        run: pnpm run build
-      - name: Git actions
+      - name: Run script file
         run: |
-         git config --global user.email "igoratilar10@gmail.com"
-         git config --global user.name "Igor Atilar"
-         git add dist -f
-         git commit -m "build: add dist"
-         git subtree push --prefix dist origin gh-pages -f
+         chmod +x deploy.sh
+         deploy.sh
+        shell: bash
