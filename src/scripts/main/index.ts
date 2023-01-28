@@ -1,4 +1,4 @@
-import './style.css';
+import '../../style.css';
 
 const addActiveStyleToCurrentLink = () => {
   const bottomNavigationLinks = document.querySelectorAll('.nav-link');
@@ -20,3 +20,10 @@ const addActiveStyleToCurrentLink = () => {
 };
 
 addActiveStyleToCurrentLink();
+
+const modal = document.querySelector('dialog')!;
+const modalContainer = document.querySelector('#modal-container')!;
+
+modal.addEventListener('click', () => modal.close());
+
+modalContainer.addEventListener('click', (event) => event.stopPropagation());
