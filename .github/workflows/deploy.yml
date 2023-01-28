@@ -26,9 +26,8 @@ jobs:
         run: cd dist
       - name: Git actions
         run: |
-         export GIT_USER=${{secrets.GIT_USER}}
-         git config --global user.name "$GIT_USER"
          git config --global user.email "igoratilar10@gmail.com"
+         git config --global user.name "Igor Atilar"
          git init
          git checkout -B main
          git add -A
