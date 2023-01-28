@@ -17,8 +17,8 @@ jobs:
       - name: Build
         run: pnpm run build
       - name: Change directory to dist
-      - run: cd dist
+        run: cd dist
       - name: Git actions
-      - run: git init && git checkout -B main && git add -A && git commit -m 'deploy'
+        run: git init && git checkout -B main && git add -A && git commit -m 'deploy'
       - name: Push to gh-pages branch
-      - run: git push -f git@github.com:IgorAtilar/espeon.git main:gh-pages
+        run: git push -f git@github.com:IgorAtilar/espeon.git main:gh-pages
