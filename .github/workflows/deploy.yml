@@ -28,4 +28,4 @@ jobs:
          git config --global user.name "Igor Atilar"
          git add dist -f
          git commit -m "build: add dist"
-         git subtree push --prefix dist origin gh-pages
+         git subtree push --prefix dist origin gh-pages -f
