@@ -20,6 +20,10 @@ jobs:
           run_install: false
       - name: Install dependencies
         run: pnpm install
+      - name: Git config
+        run: |
+         git config --global user.email "igoratilar10@gmail.com"
+         git config --global user.name "Igor Atilar"
       - name: Run script file
         run: |
          chmod +x ./deploy.sh
