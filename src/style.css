@@ -23,6 +23,7 @@ ul {
   --slice-of-life: #a7a7a7;
   --drama: #dc0a2d;
   --fantasy: #b5273f;
+  --supernatural: #ffffff;
 }
 
 body {
@@ -31,10 +32,38 @@ body {
   height: 100vh;
   width: 100vw;
   background-color: var(--adventure);
-  background-image: url(/assets/pokeball-bg.svg);
-  background-repeat: no-repeat;
-  background-position: center;
   color: var(--slice-of-life);
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#background-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--supernatural);
+  font-size: 24px;
+  row-gap: 8px;
+  text-align: center;
+}
+
+#background-container img {
+  width: 320px;
+}
+
+.rotation-animation {
+  animation: rotation 0.5s infinite linear;
 }
 
 a {

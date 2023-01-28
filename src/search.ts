@@ -34,14 +34,36 @@ type Card = {
   };
 };
 
-const createCardElement = (card: Card) => {
-  const button = document.createElement('button');
-  button.setAttribute('title', card.name);
-  button.setAttribute('class', 'card');
+const createElement = <K extends keyof HTMLElementTagNameMap>({
+  tagName,
+  attributes,
+}: {
+  tagName: K;
+  attributes?: Record<string, string>;
+}): HTMLElementTagNameMap[K] => {
+  const el = document.createElement(tagName);
+  Object.entries(attributes || {}).forEach(([key, value]) =>
+    el.setAttribute(key, value)
+  );
+  return el;
+};
 
-  const image = document.createElement('img');
-  image.setAttribute('src', card.images.large);
-  image.setAttribute('alt', `Carta do pokémon ${card.name}`);
+const createCardElement = (card: Card) => {
+  const button = createElement({
+    tagName: 'button',
+    attributes: {
+      class: 'card',
+      title: card.name,
+    },
+  });
+
+  const image = createElement({
+    tagName: 'img',
+    attributes: {
+      src: card.images.large,
+      alt: `Carta do pokémon ${card.name}`,
+    },
+  });
 
   button.appendChild(image);
 
@@ -49,7 +71,20 @@ const createCardElement = (card: Card) => {
 };
 
 const clearCardsContainer = () => {
+  const pokeballBackgroundContainer = document.querySelector(
+    '#background-container'
+  )!;
   const cardsContainer = document.querySelector('#cards-container')!;
+
+  const image = createElement({
+    tagName: 'img',
+    attributes: {
+      id: 'pokeball-bg',
+      src: '/assets/pokeball-bg.svg',
+    },
+  });
+
+  pokeballBackgroundContainer.replaceChildren(image);
   cardsContainer.innerHTML = '';
 };
 
@@ -70,20 +105,34 @@ const insertPokemonCards = (cards: Card[]) => {
 };
 
 const insertLoading = () => {
-  const cardsContainer = document.querySelector('#cards-container')!;
-  cardsContainer.innerHTML = `<div id="loading-container" aria-busy="true">
-  <span>Carregando cartas...</span>
-</div>`;
+  const pokeballBackgroundImage = document.querySelector('#pokeball-bg')!;
+  pokeballBackgroundImage.classList.add('rotation-animation');
 };
 
 const insertError = () => {
-  const cardsContainer = document.querySelector('#cards-container')!;
-  cardsContainer.innerHTML = `<div id="error-container">
-  <span
-    >Ops, um erro ocorreu. Tente buscar por outro termo ou tente
-    novamente mais tarde.</span
-  >
-</div>`;
+  const backgroundContainer = document.querySelector('#background-container')!;
+  const pokeballTop = createElement({
+    tagName: 'img',
+    attributes: {
+      src: '/assets/pokeball-slice-top.svg',
+    },
+  });
+
+  const pokeballBottom = createElement({
+    tagName: 'img',
+    attributes: {
+      src: '/assets/pokeball-slice-bottom.svg',
+    },
+  });
+
+  const text = createElement({
+    tagName: 'span',
+  });
+
+  text.innerHTML = `Ops, um erro aconteceu :( <br />
+  Tente buscar por outro termo ou tente novamente mais tarde.`;
+
+  backgroundContainer.replaceChildren(pokeballTop, text, pokeballBottom);
 };
 
 const removeExtraSpaces = (value: string) => value.replace(/\s+/g, ' ').trim();
