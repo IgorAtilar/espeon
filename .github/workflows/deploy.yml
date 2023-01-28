@@ -22,6 +22,6 @@ jobs:
         run: pnpm install
       - name: Run script file
         run: |
-         chmod +x deploy.sh
-         deploy.sh
+         chmod +x ./deploy.sh
+         ./deploy.sh
         shell: bash
