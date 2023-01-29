@@ -1,0 +1,24 @@
+section {
+  display: flex;
+  flex: 1;
+  padding: 12px;
+  overflow: auto;
+  overflow-x: hidden;
+  z-index: 1;
+  margin-bottom: var(--footer-height);
+  margin-top: 12px;
+  justify-content: center;
+}
+
+#deck-container {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.deck-card img {
+  width: 144px;
+  height: 198px;
+}

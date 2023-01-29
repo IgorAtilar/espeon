@@ -1,4 +1,12 @@
-import '../../style.css';
+import { Subject } from 'rxjs';
+import { createElement } from '../helpers/dom';
+import { Toast, ToastType } from '../types/toast';
+
+const toast$ = new Subject<Toast>();
+
+export const showToast = (toast: Toast) => {
+  toast$.next(toast);
+};
 
 const addActiveStyleToCurrentLink = () => {
   const bottomNavigationLinks = document.querySelectorAll('.nav-link');
@@ -21,9 +29,58 @@ const addActiveStyleToCurrentLink = () => {
 
 addActiveStyleToCurrentLink();
 
-const modal = document.querySelector('dialog')!;
-const modalContainer = document.querySelector('#modal-container')!;
+const mapToastTypeToIcon = {
+  [ToastType.ERROR]: createElement({
+    tagName: 'i',
+    attributes: {
+      class: 'ph-x',
+    },
+  }),
+  [ToastType.SUCCESS]: createElement({
+    tagName: 'i',
+    attributes: {
+      class: 'ph-check',
+    },
+  }),
+  [ToastType.WARNING]: createElement({
+    tagName: 'i',
+    attributes: {
+      class: 'ph-warning',
+    },
+  }),
+};
 
-modal.addEventListener('click', () => modal.close());
+const createToastContent = ({ type, message }: Toast) => {
+  const className = `toast-${type.toString().toLowerCase()}`;
+  const icon = mapToastTypeToIcon[type];
 
-modalContainer.addEventListener('click', (event) => event.stopPropagation());
+  const container = createElement({
+    tagName: 'div',
+    attributes: {
+      class: className,
+    },
+  });
+
+  const text = createElement({
+    tagName: 'span',
+  });
+
+  text.textContent = message;
+
+  container.appendChild(icon);
+  container.appendChild(text);
+
+  return container;
+};
+
+toast$.subscribe((notification) => {
+  const toastContainer = document.querySelector('#toast-container')!;
+  const toastContent = createToastContent(notification);
+  toastContainer.replaceChildren(toastContent);
+
+  toastContainer.classList.toggle('show');
+
+  setTimeout(() => {
+    toastContainer.classList.toggle('show');
+  }, 2000);
+});

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,6 +11,9 @@
       rel="stylesheet"
     />
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="search.css" />
+
     <title>espeon</title>
   </head>
   <body>
@@ -21,7 +24,7 @@
           <input id="search-input" placeholder="Search for a card" />
         </div>
       </header>
-      <section id="content">
+      <section>
         <div id="cards-container"></div>
       </section>
       <footer>
@@ -48,6 +51,7 @@
       <dialog>
         <div id="modal-container"></div>
       </dialog>
+      <div id="toast-container" role="dialog"></div>
       <div id="background-container">
         <img src="/assets/pokeball-bg.svg" id="pokeball-bg" />
       </div>

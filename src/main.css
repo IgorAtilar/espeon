@@ -1,0 +1,123 @@
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+:root {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  --adventure: #242424;
+  --action: #2d2d2d;
+  --comedy: #838383;
+  --slice-of-life: #a7a7a7;
+  --drama: #dc0a2d;
+  --fantasy: #b5273f;
+  --supernatural: #ffffff;
+  --magic: #5dca5d;
+  --mystery: #e8dd4d;
+  --psychological: #000000;
+  --header-height: 62px;
+  --footer-height: 56px;
+  --fire: #ff4040;
+  --fighting: #cc7722;
+  --dragon: #c49f1a;
+  --lightning: #ffee00;
+  --grass: #33bb33;
+  --water: #00aaff;
+  --fairy: #e03a83;
+  --psychic: #cc00dd;
+  --darkness: #333333;
+  --metal: #c0c0c0;
+  --colorless: #f0f0f0;
+  --modal-z-index: 998;
+  --toast-z-index: 999;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--adventure);
+  color: var(--slice-of-life);
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button:focus {
+  outline: 1px solid var(--supernatural);
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  max-width: 1280px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px;
+  background-color: var(--adventure);
+  z-index: 2;
+}
+
+#bottom-nav > ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 32px;
+}
+
+#bottom-nav > ul .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#bottom-nav i[class^='ph'] {
+  font-size: 24px;
+  color: var(--slice-of-life);
+  transition: all ease 0.2s;
+  cursor: pointer;
+}
+
+#bottom-nav i[class^='ph']:hover {
+  color: var(--fantasy);
+}
+
+#bottom-nav .bottom-nav-anchor-active i[class^='ph'] {
+  color: var(--drama);
+}

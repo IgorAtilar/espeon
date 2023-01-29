@@ -17,6 +17,9 @@ import { mapCardResponseToCard } from '../helpers/entities';
 import pokeballBgURL from '../../assets/pokeball-bg.svg';
 import pokeballSliceTopURL from '../../assets/pokeball-slice-top.svg';
 import pokeballSliceBottomURL from '../../assets/pokeball-slice-bottom.svg';
+import { addCardToDeck } from '../deck';
+import { showToast } from '../main';
+import { ToastType } from '../types/toast';
 
 const searchInput = <HTMLInputElement>document.querySelector('#search-input');
 const cardsContainer = document.querySelector('#cards-container')!;
@@ -26,11 +29,25 @@ const pokeballBackgroundContainer = document.querySelector(
 const modal = document.querySelector('dialog')!;
 const modalContainer = document.querySelector('#modal-container')!;
 
+modal.addEventListener('click', () => modal.close());
+
+modalContainer.addEventListener('click', (event) => event.stopPropagation());
+
 const handleCloseModal = () => {
   modal.close();
 };
 
-const createCardModalContent = ({ imageURL, name, types }: Card) => {
+const handleAddCard = (card: Card) => {
+  addCardToDeck(card);
+  modal.close();
+  showToast({
+    type: ToastType.SUCCESS,
+    message: 'Card added to your deck!',
+  });
+};
+
+const createCardModalContent = (card: Card) => {
+  const { imageURL, name, types } = card;
   const type = types?.[0] ?? Type.Colorless;
   modalContainer.className = `modal-${type.toLowerCase()}`;
 
@@ -77,7 +94,9 @@ const createCardModalContent = ({ imageURL, name, types }: Card) => {
     },
   });
 
-  addButton.textContent = 'Add on deck';
+  addButton.onclick = () => handleAddCard(card);
+
+  addButton.textContent = 'Add to deck';
 
   modalContainer.innerHTML = '';
 
@@ -128,7 +147,7 @@ const createCardElement = ({ name, imageURL }: Card) => {
     tagName: 'img',
     attributes: {
       src: imageURL,
-      alt: `Carta do pokémon ${name}`,
+      alt: `Card ${name}`,
     },
   });
 

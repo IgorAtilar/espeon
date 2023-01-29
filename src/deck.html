@@ -10,13 +10,16 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="deck.css" />
     <title>espeon</title>
   </head>
   <body>
     <main>
       <header></header>
       <section>
-        <h1>Deck</h1>
+        <div id="deck-container"></div>
       </section>
       <footer>
         <nav id="bottom-nav">
@@ -39,7 +42,9 @@
           </ul>
         </nav>
       </footer>
+      <div id="toast-container" role="dialog"></div>
     </main>
     <script type="module" src="/scripts/main"></script>
+    <script type="module" src="/scripts/deck"></script>
   </body>
 </html>

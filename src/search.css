@@ -1,64 +1,14 @@
-html {
-  scroll-behavior: smooth;
-}
-
-* {
-  font-family: 'Nunito', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  outline: 0;
-}
-
-ul {
-  list-style: none;
-}
-
-:root {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  --adventure: #242424;
-  --action: #2d2d2d;
-  --comedy: #838383;
-  --slice-of-life: #a7a7a7;
-  --drama: #dc0a2d;
-  --fantasy: #b5273f;
-  --supernatural: #ffffff;
-  --header-height: 62px;
-  --footer-height: 56px;
-  --fire: #ff4040;
-  --fighting: #cc7722;
-  --dragon: #c49f1a;
-  --lightning: #ffee00;
-  --grass: #33bb33;
-  --water: #00aaff;
-  --fairy: #e03a83;
-  --psychic: #cc00dd;
-  --darkness: #333333;
-  --metal: #c0c0c0;
-  --colorless: #f0f0f0;
-}
-
-body {
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
+  align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
+  padding: 12px;
   background-color: var(--adventure);
-  color: var(--slice-of-life);
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  z-index: 2;
 }
 
 #background-container {
@@ -78,47 +28,6 @@ body {
 #background-container img {
   width: 320px;
   z-index: 0;
-}
-
-.rotation-animation {
-  animation: rotation 1s infinite linear;
-}
-
-a {
-  text-decoration: none;
-}
-
-button {
-  cursor: pointer;
-  background: none;
-  border: none;
-  outline: none;
-}
-
-button:focus {
-  outline: 1px solid var(--supernatural);
-}
-
-main {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  max-width: 1280px;
-}
-
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 12px;
-  background-color: var(--adventure);
-  z-index: 2;
 }
 
 #search-input-container {
@@ -163,48 +72,7 @@ header {
   color: var(--comedy);
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 16px;
-  background-color: var(--adventure);
-  z-index: 2;
-}
-
-#bottom-nav > ul {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  column-gap: 32px;
-}
-
-#bottom-nav > ul .nav-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#bottom-nav i[class^='ph'] {
-  font-size: 24px;
-  color: var(--slice-of-life);
-  transition: all ease 0.2s;
-  cursor: pointer;
-}
-
-#bottom-nav i[class^='ph']:hover {
-  color: var(--fantasy);
-}
-
-#bottom-nav .bottom-nav-anchor-active i[class^='ph'] {
-  color: var(--drama);
-}
-
-#content {
+section {
   display: flex;
   flex: 1;
   padding: 12px;
@@ -224,13 +92,26 @@ footer {
   width: 100%;
 }
 
-@keyframes loading {
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes card-loading {
   0% {
     background-color: var(--adventure);
   }
   100% {
     background-color: var(--action);
   }
+}
+
+.rotation-animation {
+  animation: rotation 1s infinite linear;
 }
 
 .card {
@@ -241,7 +122,7 @@ footer {
   z-index: 1;
   border: 1px solid var(--action);
   border-radius: 12px;
-  animation: loading 1s linear infinite alternate;
+  animation: card-loading 1s linear infinite alternate;
 }
 
 .card > img {
@@ -249,7 +130,7 @@ footer {
   width: 100%;
   height: auto;
   border: 1px solid var(--action);
-  animation: loading 1s linear infinite alternate;
+  animation: card-loading 1s linear infinite alternate;
 }
 
 #loading-container {
@@ -270,6 +151,7 @@ dialog {
   min-height: 100vh;
   border: none;
   backdrop-filter: blur(4px);
+  z-index: var(--modal-z-index);
 }
 
 #modal-container {
@@ -289,7 +171,7 @@ dialog {
   max-width: 380px;
   border-radius: 12px;
   height: auto;
-  animation: loading 1s linear infinite alternate;
+  animation: card-loading 1s linear infinite alternate;
   border: 4px solid;
 }
 
@@ -521,3 +403,45 @@ dialog {
 }
 
 /* water */
+
+#toast-container {
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: calc(var(--footer-height) + 30px);
+  z-index: var(--toast-z-index);
+}
+
+#toast-container > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+#toast-container i {
+  font-size: 24px;
+}
+
+.toast-success {
+  background: var(--magic);
+  color: var(--supernatural);
+}
+
+.toast-error {
+  background: var(--drama);
+  color: var(--supernatural);
+}
+
+.toast-warning {
+  background: var(--mystery);
+  color: var(--psychological);
+}
+
+#toast-container.show {
+  display: block;
+}
