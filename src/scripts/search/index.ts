@@ -26,22 +26,68 @@ const pokeballBackgroundContainer = document.querySelector(
 const modal = document.querySelector('dialog')!;
 const modalContainer = document.querySelector('#modal-container')!;
 
-const handleShowModal = ({ imageURL, name, types }: Card) => {
-  console.log('types', types);
+const handleCloseModal = () => {
+  modal.close();
+};
+
+const createCardModalContent = ({ imageURL, name, types }: Card) => {
   const type = types?.[0] ?? Type.Colorless;
   modalContainer.className = `modal-${type.toLowerCase()}`;
 
-  modalContainer.innerHTML = ` <div id="modal-header">
-  <button id="modal-close-button" title="Close modal">
-    <i class="ph-x"></i>
-  </button>
-</div>
-<img
-  src="${imageURL}"
-  class="modal-image"
-  alt="Card ${name}"
-/>
-<button id="modal-add-card-button">Add on deck</button>`;
+  const header = createElement({
+    tagName: 'div',
+    attributes: {
+      id: 'modal-header',
+    },
+  });
+
+  const closeButton = createElement({
+    tagName: 'button',
+    attributes: {
+      id: 'modal-close-button',
+      title: 'Close modal',
+    },
+  });
+
+  closeButton.onclick = handleCloseModal;
+
+  const closeIcon = createElement({
+    tagName: 'i',
+    attributes: {
+      class: 'ph-x',
+    },
+  });
+
+  closeButton.appendChild(closeIcon);
+  header.appendChild(closeButton);
+
+  const image = createElement({
+    tagName: 'img',
+    attributes: {
+      src: imageURL,
+      class: 'modal-image',
+      alt: `Card ${name}`,
+    },
+  });
+
+  const addButton = createElement({
+    tagName: 'button',
+    attributes: {
+      id: 'modal-add-card-button',
+    },
+  });
+
+  addButton.textContent = 'Add on deck';
+
+  modalContainer.innerHTML = '';
+
+  modalContainer.appendChild(header);
+  modalContainer.appendChild(image);
+  modalContainer.appendChild(addButton);
+};
+
+const handleShowModal = (card: Card) => {
+  createCardModalContent(card);
   modal.showModal();
 };
 

@@ -270,7 +270,6 @@ dialog {
   min-height: 100vh;
   border: none;
   backdrop-filter: blur(4px);
-  z-index: 9999;
 }
 
 #modal-container {
