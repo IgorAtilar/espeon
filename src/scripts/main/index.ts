@@ -6,7 +6,7 @@ const addActiveStyleToCurrentLink = () => {
   const mapHrefToPath: Record<string, string> = {
     '.': '/espeon/',
     'deck.html': '/espeon/deck.html',
-    'ajuda.html': '/espeon/ajuda.html',
+    'help.html': '/espeon/help.html',
   };
 
   bottomNavigationLinks.forEach((link) => {

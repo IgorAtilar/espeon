@@ -205,8 +205,8 @@ const insertError = () => {
     tagName: 'span',
   });
 
-  text.innerHTML = `Ops, um erro aconteceu :( <br />
-  Tente buscar por outro termo ou tente novamente mais tarde.`;
+  text.innerHTML = `Oops, something wrong happened :( <br />
+  Try to search for another card or try later.`;
 
   pokeballBackgroundContainer.replaceChildren(
     pokeballTop,
