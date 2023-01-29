@@ -1,6 +1,7 @@
 import { fromEvent } from 'rxjs';
 import { Card } from '../entities/Card';
 import { Deck } from '../entities/Deck';
+import { createElement } from '../helpers/dom';
 import { DECK_STORAGE_KEY } from '../helpers/storage';
 
 const pageLoaded$ = fromEvent(window, 'DOMContentLoaded');
@@ -38,17 +39,86 @@ export const getDeckCards = () => {
   return cards || [];
 };
 
-const insertCards = (cards: Card[]) => {
-  const deckCardsContainer = document.querySelector('#deck-container')!;
+const onDeckCardDragStart = (event: DragEvent) => {
+  const target = event.target as HTMLDivElement;
 
-  cards.forEach(({ imageURL }) => {
-    deckCardsContainer.innerHTML += `<button class="deck-card">
-    <img src="${imageURL}" />
-  </button>`;
+  target.classList.add('is-dragging');
+};
+
+const handleDeckCardDragEnd = (event: DragEvent) => {
+  const target = event.target as HTMLDivElement;
+  const { id } = target.dataset;
+  target.classList.remove('is-dragging');
+
+  const deckCardsElements = <HTMLDivElement[]>(
+    (<unknown>document.querySelectorAll('.deck-card'))
+  );
+
+  deckCardsElements.forEach((deckCardElement) => {
+    const { id: cardId } = deckCardElement.dataset;
+
+    if (cardId === id) return;
+
+    deckCardElement.classList.remove('highlight');
   });
+};
+
+const handleDeckCardDragOver = (event: DragEvent) => {
+  const target = event.target as HTMLDivElement;
+
+  const targetImage = <HTMLImageElement>target.firstElementChild;
+  const cardBeingDragged = document.querySelector('.is-dragging')!;
+  const cardImage = <HTMLImageElement>cardBeingDragged.firstElementChild;
+
+  setTimeout(() => {
+    target.replaceChildren(cardImage);
+    cardBeingDragged.replaceChildren(targetImage);
+  }, 500);
+};
+
+
+const createDeckCard = ({ imageURL, id }: Card) => {
+  const deckCard = createElement({
+    tagName: 'div',
+    attributes: {
+      class: 'deck-card',
+      draggable: 'true',
+      ['data-id']: id,
+    },
+  });
+  const deckCardImage = createElement({
+    tagName: 'img',
+    attributes: {
+      src: imageURL,
+      draggable: 'false',
+    },
+  });
+
+  deckCard.appendChild(deckCardImage);
+
+  return deckCard;
+};
+
+const insertDeckCards = (cards: Card[]) => {
+  const deckCardsContainer = document.querySelector('#deck-container')!;
+  const deckCards: HTMLDivElement[] = [];
+
+  cards.forEach((card) => {
+    const deckCard = createDeckCard(card);
+    deckCards.push(deckCard);
+    deckCardsContainer.appendChild(deckCard);
+  });
+
+  return deckCards;
 };
 
 pageLoaded$.subscribe(() => {
   const cards = getDeckCards();
-  insertCards(cards);
+  const deckCards = insertDeckCards(cards);
+
+  deckCards.forEach((deckCard) => {
+    deckCard.addEventListener('dragstart', onDeckCardDragStart);
+    deckCard.addEventListener('dragend', handleDeckCardDragEnd);
+    deckCard.addEventListener('dragover', handleDeckCardDragOver);
+  });
 });
