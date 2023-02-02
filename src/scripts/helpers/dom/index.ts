@@ -13,3 +13,13 @@ export const createElement = <K extends keyof HTMLElementTagNameMap>({
 };
 
 export const isMobile = () => window.innerWidth <= 800;
+
+export const swapElements = (
+  firstElement: HTMLElement,
+  secondElement: HTMLElement
+) => {
+  const auxElement = document.createComment('');
+  firstElement.replaceWith(auxElement);
+  secondElement.replaceWith(firstElement);
+  auxElement.replaceWith(secondElement);
+};

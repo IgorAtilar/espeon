@@ -19,12 +19,8 @@ section {
 
 .deck-card {
   display: flex;
-  cursor: grab;
-}
-
-.deck-card img {
   width: 100%;
-  pointer-events: none;
+  cursor: grab;
 }
 
 @media (min-width: 768px) {
