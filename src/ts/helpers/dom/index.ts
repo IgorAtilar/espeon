@@ -6,7 +6,7 @@ export const createElement = <K extends keyof HTMLElementTagNameMap>({
   attributes?: Record<string, string>
 }): HTMLElementTagNameMap[K] => {
   const el = document.createElement(tagName)
-  Object.entries(attributes != null || {}).forEach(([key, value]) => {
+  Object.entries(attributes ?? {}).forEach(([key, value]) => {
     el.setAttribute(key, value)
   })
   return el

@@ -12,7 +12,7 @@ import {
 import { createElement, isMobile } from '../helpers/dom'
 import { removeExtraSpaces } from '../helpers/string'
 import { Card, Type } from '../entities/Card'
-import { getCards } from '../api'
+import { searchCards } from '../api'
 import { mapCardResponseToCard } from '../helpers/entities'
 import pokeballBgURL from '../../assets/pokeball-bg.svg'
 import pokeballSliceTopURL from '../../assets/pokeball-slice-top.svg'
@@ -219,7 +219,7 @@ const handleLoading = (loading?: boolean) => {
   pokeballBackgroundImage?.classList.add('rotation-animation')
 }
 
-const insertError = () => {
+const insertError = (message?: string) => {
   const pokeballTop = createElement({
     tagName: 'img',
     attributes: {
@@ -238,7 +238,9 @@ const insertError = () => {
     tagName: 'span',
   })
 
-  text.innerHTML = `Oops, something wrong happened :( <br />
+  text.innerHTML = message?.length
+    ? message
+    : `Oops, something wrong happened :( <br />
   Try to search for another card or try later.`
 
   pokeballBackgroundContainer?.replaceChildren(pokeballTop, text, pokeballBottom)
@@ -254,23 +256,22 @@ const result$ = input$.pipe(
   tap(() => {
     page$.next({ page: 1 })
   }),
-  switchMap((cardName) => page$.pipe(switchMap(({ page }) => getCards({ cardName, page })))),
-  tap(({ data }) => {
-    if (data?.totalCount && data?.pageSize) {
-      const totalPages = Math.ceil(data.totalCount / data.pageSize)
+  switchMap((cardName) => page$.pipe(switchMap(({ page }) => searchCards({ cardName, page })))),
+  tap(({ totalPages }) => {
+    if (totalPages) {
       totalPages$.next({ totalPages })
     }
   })
 )
 
-result$.subscribe(({ data, loading, error }) => {
+result$.subscribe(({ cards, loading, error, message }) => {
   handleLoading(loading)
 
   if (error) {
-    insertError()
+    insertError(message)
     return
   }
 
-  const cards = data?.cards.map(mapCardResponseToCard) ?? []
-  insertPokemonCards(cards)
+  const mappedCards = cards?.map(mapCardResponseToCard) ?? []
+  insertPokemonCards(mappedCards)
 })

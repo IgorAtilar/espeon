@@ -10,15 +10,19 @@ export interface CardResponse {
   types?: Type[]
 }
 
-export interface GetCardsResponse {
-  data?: {
-    cards: CardResponse[]
-    page: number
-    pageSize: number
-    totalCount: number
-  }
+export type RawSearchCardsResponse =
+  | {
+      cards: CardResponse[]
+      totalPages: number
+    }
+  | { message: string }
+
+export interface SearchCardsResponse {
   error?: boolean
+  message?: string
+  cards?: CardResponse[]
   loading?: boolean
+  totalPages?: number
 }
 
 export interface GetCardsParams {
