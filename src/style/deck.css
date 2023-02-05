@@ -12,25 +12,284 @@ section {
 
 #deck-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 12px;
   height: max-content;
 }
 
-.deck-card {
-  display: flex;
-  width: 100%;
-  cursor: grab;
-}
-
 @media (min-width: 768px) {
   #deck-container {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (min-width: 992px) {
   #deck-container {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 }
+
+.deck-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  cursor: grab;
+}
+
+.deck-card-image-wrapper {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.deck-card img {
+  width: 100%;
+  pointer-events: none;
+}
+
+.deck-card-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin-top: -16px;
+  font-size: 20px;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.deck-card-remove-btn {
+  display: flex;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin-bottom: -16px;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.deck-card-remove-btn i {
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .deck-card-remove-btn {
+    display: none;
+  }
+}
+
+/* colorless */
+
+.colorless .deck-card-image-wrapper {
+  background: var(--colorless);
+  color: var(--darkness);
+}
+
+.colorless .deck-card-remove-btn {
+  background: var(--colorless);
+  color: var(--darkness);
+}
+
+.colorless .deck-card-counter {
+  background: var(--colorless);
+  color: var(--darkness);
+}
+
+/* colorless */
+
+/* darkness*/
+
+.darkness .deck-card-image-wrapper {
+  background: var(--darkness);
+  color: var(--colorless);
+}
+
+.darkness .deck-card-remove-btn {
+  background: var(--darkness);
+  color: var(--colorless);
+}
+
+.darkness .deck-card-counter {
+  background: var(--darkness);
+  color: var(--colorless);
+}
+
+/* darkness*/
+
+/* dragon */
+
+.dragon .deck-card-remove-btn {
+  background: var(--dragon);
+  color: var(--darkness);
+}
+
+.dragon .deck-card-image-wrapper {
+  background: var(--dragon);
+  color: var(--darkness);
+}
+
+.dragon .deck-card-counter {
+  background: var(--dragon);
+  color: var(--darkness);
+}
+
+/* dragon */
+
+/* fairy */
+
+.fairy .deck-card-remove-btn {
+  background: var(--fairy);
+  color: var(--colorless);
+}
+
+.fairy .deck-card-image-wrapper {
+  background: var(--fairy);
+  color: var(--colorless);
+}
+
+.fairy .deck-card-counter {
+  background: var(--fairy);
+  color: var(--colorless);
+}
+
+/* fairy */
+
+/* fighting */
+
+.fighting .deck-card-remove-btn {
+  background: var(--fighting);
+  color: var(--colorless);
+}
+
+.fighting .deck-card-image-wrapper {
+  background: var(--fighting);
+  color: var(--colorless);
+}
+
+.fighting .deck-card-counter {
+  background: var(--fighting);
+  color: var(--colorless);
+}
+
+/* fighting */
+
+/* fire */
+
+.fire .deck-card-counter {
+  background: var(--fire);
+  color: var(--colorless);
+}
+
+.fire .deck-card-remove-btn {
+  background: var(--fire);
+  color: var(--colorless);
+}
+
+.fire .deck-card-image-wrapper {
+  background: var(--fire);
+  color: var(--colorless);
+}
+
+/* fire */
+
+/* grass */
+
+.grass .deck-card-counter {
+  background: var(--grass);
+  color: var(--colorless);
+}
+
+.grass .deck-card-remove-btn {
+  background: var(--grass);
+  color: var(--colorless);
+}
+
+.grass .deck-card-image-wrapper {
+  background: var(--grass);
+  color: var(--colorless);
+}
+
+/* grass */
+
+/* lightning */
+
+.lightning .deck-card-counter {
+  background: var(--lightning);
+  color: var(--darkness);
+}
+
+.lightning .deck-card-remove-btn {
+  background: var(--lightning);
+  color: var(--darkness);
+}
+
+.lightning .deck-card-image-wrapper {
+  background: var(--lightning);
+  color: var(--darkness);
+}
+/* lightning */
+
+/* metal */
+
+.metal .deck-card-counter {
+  background: var(--metal);
+  color: var(--darkness);
+}
+
+.metal .deck-card-remove-btn {
+  background: var(--metal);
+  color: var(--darkness);
+}
+
+.metal .deck-card-image-wrapper {
+  background: var(--metal);
+  color: var(--darkness);
+}
+
+/* metal */
+
+/* psychic */
+
+.psychic .deck-card-counter {
+  background: var(--psychic);
+  color: var(--colorless);
+}
+
+.psychic .deck-card-remove-btn {
+  background: var(--psychic);
+  color: var(--colorless);
+}
+
+.psychic .deck-card-image-wrapper {
+  background: var(--psychic);
+  color: var(--colorless);
+}
+
+/* psychic */
+
+/* water */
+
+.water .deck-card-counter {
+  background: var(--water);
+  color: var(--colorless);
+}
+
+.water .deck-card-remove-btn {
+  background: var(--water);
+  color: var(--colorless);
+}
+
+.water .deck-card-image-wrapper {
+  background: var(--water);
+  color: var(--colorless);
+}
+
+/* water */

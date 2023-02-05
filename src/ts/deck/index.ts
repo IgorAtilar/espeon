@@ -1,5 +1,5 @@
 import { fromEvent, map, tap } from 'rxjs'
-import { Card } from '../entities/Card'
+import { Card, Type } from '../entities/Card'
 import { Deck } from '../entities/Deck'
 import { createElement, swapElements } from '../helpers/dom'
 import { DECK_STORAGE_KEY } from '../helpers/storage'
@@ -45,11 +45,13 @@ export const getDeckCards = () => {
 }
 
 const createDeckCard = ({ imageURL, id, name, types }: Card) => {
-  const deckCardImage = createElement({
-    tagName: 'img',
+  const type = types?.[0] ?? Type.Colorless
+
+  const deckCardContainer = createElement({
+    tagName: 'div',
     attributes: {
-      class: 'deck-card',
-      src: imageURL,
+      class: `deck-card ${type.toLowerCase()}`,
+      draggable: 'true',
       'data-id': id,
       'data-name': name,
       'data-types': JSON.stringify(types),
@@ -57,7 +59,55 @@ const createDeckCard = ({ imageURL, id, name, types }: Card) => {
     },
   })
 
-  return deckCardImage
+  const deckCardRemoveButton = createElement({
+    tagName: 'button',
+    attributes: {
+      class: 'deck-card-remove-btn',
+      'data-id': id,
+      title: 'remove card',
+    },
+  })
+
+  const deckCardRemoveIcon = createElement({
+    tagName: 'i',
+    attributes: {
+      class: 'ph-x-bold',
+    },
+  })
+  deckCardRemoveButton.appendChild(deckCardRemoveIcon)
+
+  const deckCardImageWrapper = createElement({
+    tagName: 'div',
+    attributes: {
+      draggable: 'false',
+      class: 'deck-card-image-wrapper',
+    },
+  })
+
+  const deckCardImage = createElement({
+    tagName: 'img',
+    attributes: {
+      src: imageURL,
+      draggable: 'false',
+    },
+  })
+
+  deckCardImageWrapper.appendChild(deckCardImage)
+
+  const deckCardCounter = createElement({
+    tagName: 'div',
+    attributes: {
+      class: 'deck-card-counter',
+    },
+  })
+
+  deckCardCounter.innerText = '4'
+
+  deckCardContainer.appendChild(deckCardRemoveButton)
+  deckCardContainer.appendChild(deckCardImageWrapper)
+  deckCardContainer.appendChild(deckCardCounter)
+
+  return deckCardContainer
 }
 
 const insertDeckCardsElements = (cards: Card[]) => {
