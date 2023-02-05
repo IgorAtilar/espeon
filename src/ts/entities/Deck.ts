@@ -1,5 +1,5 @@
-import { Card } from './Card';
+import { Card } from './Card'
 
-export type Deck = {
-  cards: Card[];
-};
+export interface Deck {
+  cards: Card[]
+}

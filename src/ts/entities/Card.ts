@@ -12,9 +12,9 @@ export enum Type {
   Water = 'water',
 }
 
-export type Card = {
-  id: string;
-  name: string;
-  imageURL: string;
-  types?: Type[];
-};
+export interface Card {
+  id: string
+  name: string
+  imageURL: string
+  types?: Type[]
+}

@@ -1,4 +1,4 @@
-import Tilt from 'vanilla-tilt';
+import Tilt from 'vanilla-tilt'
 import {
   BehaviorSubject,
   debounceTime,
@@ -8,55 +8,60 @@ import {
   map,
   switchMap,
   tap,
-} from 'rxjs';
-import { createElement, isMobile } from '../helpers/dom';
-import { removeExtraSpaces } from '../helpers/string';
-import { Card, Type } from '../entities/Card';
-import { getCards } from '../api';
-import { mapCardResponseToCard } from '../helpers/entities';
-import pokeballBgURL from '../../assets/pokeball-bg.svg';
-import pokeballSliceTopURL from '../../assets/pokeball-slice-top.svg';
-import pokeballSliceBottomURL from '../../assets/pokeball-slice-bottom.svg';
-import { addCardToDeck } from '../deck';
-import { showToast } from '../main';
-import { ToastType } from '../types/toast';
+} from 'rxjs'
+import { createElement, isMobile } from '../helpers/dom'
+import { removeExtraSpaces } from '../helpers/string'
+import { Card, Type } from '../entities/Card'
+import { getCards } from '../api'
+import { mapCardResponseToCard } from '../helpers/entities'
+import pokeballBgURL from '../../assets/pokeball-bg.svg'
+import pokeballSliceTopURL from '../../assets/pokeball-slice-top.svg'
+import pokeballSliceBottomURL from '../../assets/pokeball-slice-bottom.svg'
+import { addCardToDeck } from '../deck'
+import { showToast } from '../main'
+import { ToastType } from '../types/toast'
 
-const searchInput = <HTMLInputElement>document.querySelector('#search-input');
-const cardsContainer = document.querySelector('#cards-container')!;
-const pokeballBackgroundContainer = document.querySelector(
-  '#background-container'
-)!;
-const modal = document.querySelector('dialog')!;
-const modalContainer = document.querySelector('#modal-container')!;
+const searchInput = document.querySelector('#search-input') as HTMLInputElement
+const cardsContainer = document.querySelector('#cards-container')
+const pokeballBackgroundContainer = document.querySelector('#background-container')
+const modal = document.querySelector('dialog')
+const modalContainer = document.querySelector('#modal-container')
 
-modal.addEventListener('click', () => modal.close());
+modal?.addEventListener('click', () => {
+  modal?.close()
+})
 
-modalContainer.addEventListener('click', (event) => event.stopPropagation());
+modalContainer?.addEventListener('click', (event) => {
+  event.stopPropagation()
+})
 
 const handleCloseModal = () => {
-  modal.close();
-};
+  modal?.close()
+}
 
 const handleAddCard = (card: Card) => {
-  addCardToDeck(card);
-  modal.close();
+  addCardToDeck(card)
+  modal?.close()
   showToast({
     type: ToastType.SUCCESS,
     message: 'Card added to your deck!',
-  });
-};
+  })
+}
 
 const createCardModalContent = (card: Card) => {
-  const { imageURL, name, types } = card;
-  const type = types?.[0] ?? Type.Colorless;
-  modalContainer.className = `modal-${type.toLowerCase()}`;
+  const { imageURL, name, types } = card
+  const type = types?.[0] ?? Type.Colorless
+
+  if (!modalContainer) return
+
+  modalContainer.className = `modal-${type.toLowerCase()}`
 
   const header = createElement({
     tagName: 'div',
     attributes: {
       id: 'modal-header',
     },
-  });
+  })
 
   const closeButton = createElement({
     tagName: 'button',
@@ -64,19 +69,19 @@ const createCardModalContent = (card: Card) => {
       id: 'modal-close-button',
       title: 'Close modal',
     },
-  });
+  })
 
-  closeButton.onclick = handleCloseModal;
+  closeButton.onclick = handleCloseModal
 
   const closeIcon = createElement({
     tagName: 'i',
     attributes: {
       class: 'ph-x',
     },
-  });
+  })
 
-  closeButton.appendChild(closeIcon);
-  header.appendChild(closeButton);
+  closeButton.appendChild(closeIcon)
+  header.appendChild(closeButton)
 
   const image = createElement({
     tagName: 'img',
@@ -85,54 +90,56 @@ const createCardModalContent = (card: Card) => {
       class: 'modal-image',
       alt: `Card ${name}`,
     },
-  });
+  })
 
   const addButton = createElement({
     tagName: 'button',
     attributes: {
       id: 'modal-add-card-button',
     },
-  });
+  })
 
-  addButton.onclick = () => handleAddCard(card);
+  addButton.onclick = () => {
+    handleAddCard(card)
+  }
 
-  addButton.textContent = 'Add to deck';
+  addButton.textContent = 'Add to deck'
 
-  modalContainer.innerHTML = '';
+  modalContainer.innerHTML = ''
 
-  modalContainer.appendChild(header);
-  modalContainer.appendChild(image);
-  modalContainer.appendChild(addButton);
-};
+  modalContainer.appendChild(header)
+  modalContainer.appendChild(image)
+  modalContainer.appendChild(addButton)
+}
 
 const handleShowModal = (card: Card) => {
-  createCardModalContent(card);
-  modal.showModal();
-};
+  createCardModalContent(card)
+  modal?.showModal()
+}
 
 const page$ = new BehaviorSubject({
   page: 1,
-});
+})
 
 const totalPages$ = new BehaviorSubject<{ totalPages?: number }>({
   totalPages: undefined,
-});
-const input$ = fromEvent<InputEvent>(searchInput, 'input');
+})
+const input$ = fromEvent<InputEvent>(searchInput, 'input')
 
 const intersectionObserver = new IntersectionObserver((entries) => {
   if (entries.some((entry) => entry.isIntersecting)) {
     const {
       value: { page },
-    } = page$;
+    } = page$
     const {
       value: { totalPages },
-    } = totalPages$;
+    } = totalPages$
 
     if (!totalPages || page < totalPages) {
-      page$.next({ page: page + 1 });
+      page$.next({ page: page + 1 })
     }
   }
-});
+})
 
 const createCardElement = ({ name, imageURL }: Card) => {
   const button = createElement({
@@ -141,7 +148,7 @@ const createCardElement = ({ name, imageURL }: Card) => {
       class: 'card',
       title: name,
     },
-  });
+  })
 
   const image = createElement({
     tagName: 'img',
@@ -149,12 +156,12 @@ const createCardElement = ({ name, imageURL }: Card) => {
       src: imageURL,
       alt: `Card ${name}`,
     },
-  });
+  })
 
-  button.appendChild(image);
+  button.appendChild(image)
 
-  return button;
-};
+  return button
+}
 
 const clearCardsContainer = () => {
   const image = createElement({
@@ -163,47 +170,54 @@ const clearCardsContainer = () => {
       id: 'pokeball-bg',
       src: pokeballBgURL,
     },
-  });
+  })
 
-  pokeballBackgroundContainer.replaceChildren(image);
-  cardsContainer.innerHTML = '';
-};
+  if (!cardsContainer) return
+
+  pokeballBackgroundContainer?.replaceChildren(image)
+  cardsContainer.innerHTML = ''
+}
 
 const insertPokemonCards = (cards: Card[]) => {
   cards.forEach((card, index) => {
-    const cardElement = createCardElement(card);
-    cardElement.onclick = () => handleShowModal(card);
-    const lastELement = cardsContainer.lastElementChild;
-    const isLastCard = cards.length - 1 === index;
+    const cardElement = createCardElement(card)
+    cardElement.onclick = () => {
+      handleShowModal(card)
+    }
+
+    if (!cardsContainer) return
+
+    const lastELement = cardsContainer.lastElementChild
+    const isLastCard = cards.length - 1 === index
 
     if (lastELement) {
-      intersectionObserver.unobserve(lastELement);
+      intersectionObserver.unobserve(lastELement)
     }
 
     if (isLastCard) {
-      intersectionObserver.observe(cardElement);
+      intersectionObserver.observe(cardElement)
     }
 
-    cardsContainer.appendChild(cardElement);
+    cardsContainer.appendChild(cardElement)
 
-    if (isMobile()) return;
+    if (isMobile()) return
 
     Tilt.init(cardElement, {
       glare: true,
       'max-glare': 0.5,
-    });
-  });
-};
+    })
+  })
+}
 
 const handleLoading = (loading?: boolean) => {
-  const pokeballBackgroundImage = document.querySelector('#pokeball-bg')!;
+  const pokeballBackgroundImage = document.querySelector('#pokeball-bg')
 
   if (!loading) {
-    pokeballBackgroundImage.classList.remove('rotation-animation');
-    return;
+    pokeballBackgroundImage?.classList.remove('rotation-animation')
+    return
   }
-  pokeballBackgroundImage.classList.add('rotation-animation');
-};
+  pokeballBackgroundImage?.classList.add('rotation-animation')
+}
 
 const insertError = () => {
   const pokeballTop = createElement({
@@ -211,56 +225,52 @@ const insertError = () => {
     attributes: {
       src: pokeballSliceTopURL,
     },
-  });
+  })
 
   const pokeballBottom = createElement({
     tagName: 'img',
     attributes: {
       src: pokeballSliceBottomURL,
     },
-  });
+  })
 
   const text = createElement({
     tagName: 'span',
-  });
+  })
 
   text.innerHTML = `Oops, something wrong happened :( <br />
-  Try to search for another card or try later.`;
+  Try to search for another card or try later.`
 
-  pokeballBackgroundContainer.replaceChildren(
-    pokeballTop,
-    text,
-    pokeballBottom
-  );
-};
+  pokeballBackgroundContainer?.replaceChildren(pokeballTop, text, pokeballBottom)
+}
 
 const result$ = input$.pipe(
-  map((event) => (<HTMLInputElement>event.target).value || ''),
+  map((event) => (event.target as HTMLInputElement).value || ''),
   map(removeExtraSpaces),
   debounceTime(1000),
   distinctUntilChanged(),
   tap(clearCardsContainer),
   filter((cardName) => !!cardName),
-  tap(() => page$.next({ page: 1 })),
-  switchMap((cardName) =>
-    page$.pipe(switchMap(({ page }) => getCards({ cardName, page })))
-  ),
+  tap(() => {
+    page$.next({ page: 1 })
+  }),
+  switchMap((cardName) => page$.pipe(switchMap(({ page }) => getCards({ cardName, page })))),
   tap(({ data }) => {
     if (data?.totalCount && data?.pageSize) {
-      const totalPages = Math.ceil(data.totalCount / data.pageSize);
-      totalPages$.next({ totalPages });
+      const totalPages = Math.ceil(data.totalCount / data.pageSize)
+      totalPages$.next({ totalPages })
     }
   })
-);
+)
 
 result$.subscribe(({ data, loading, error }) => {
-  handleLoading(loading);
+  handleLoading(loading)
 
   if (error) {
-    insertError();
-    return;
+    insertError()
+    return
   }
 
-  const cards = data?.cards.map(mapCardResponseToCard) || [];
-  insertPokemonCards(cards);
-});
+  const cards = data?.cards.map(mapCardResponseToCard) ?? []
+  insertPokemonCards(cards)
+})

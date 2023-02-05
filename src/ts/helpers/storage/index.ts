@@ -1,1 +1,1 @@
-export const DECK_STORAGE_KEY = '@espeon/deck';
+export const DECK_STORAGE_KEY = '@espeon/deck'

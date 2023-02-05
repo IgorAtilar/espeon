@@ -1,28 +1,28 @@
-import { Type } from '../../entities/Card';
+import { Type } from '../../entities/Card'
 
-export type CardResponse = {
-  id: string;
-  name: string;
+export interface CardResponse {
+  id: string
+  name: string
   images: {
-    small: string;
-    large: string;
-  };
-  types?: Type[];
-};
+    small: string
+    large: string
+  }
+  types?: Type[]
+}
 
-export type GetCardsResponse = {
+export interface GetCardsResponse {
   data?: {
-    cards: CardResponse[];
-    page: number;
-    pageSize: number;
-    totalCount: number;
-  };
-  error?: boolean;
-  loading?: boolean;
-};
+    cards: CardResponse[]
+    page: number
+    pageSize: number
+    totalCount: number
+  }
+  error?: boolean
+  loading?: boolean
+}
 
-export type GetCardsParams = {
-  cardName: string;
-  page?: number;
-  pageSize?: number;
-};
+export interface GetCardsParams {
+  cardName: string
+  page?: number
+  pageSize?: number
+}

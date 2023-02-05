@@ -1,2 +1,1 @@
-export const removeExtraSpaces = (value: string) =>
-  value.replace(/\s+/g, ' ').trim();
+export const removeExtraSpaces = (value: string) => value.replace(/\s+/g, ' ').trim()
