@@ -11,17 +11,17 @@ export const showToast = (toast: Toast) => {
 const addActiveStyleToCurrentLink = () => {
   const bottomNavigationLinks = document.querySelectorAll('.nav-link');
 
-  const mapHrefToPath: Record<string, string> = {
-    '.': '/espeon/',
-    'deck.html': '/espeon/deck.html',
-    'help.html': '/espeon/help.html',
+  const mapHrefToPath: Record<string, string[]> = {
+    '.': ['/espeon/', '/espeon/index.html'],
+    'deck.html': ['/espeon/deck.html'],
+    'help.html': ['/espeon/help.html'],
   };
 
   bottomNavigationLinks.forEach((link) => {
     const path = window.location.pathname;
     const linkHref = link.getAttribute('href')!;
 
-    if (mapHrefToPath[linkHref] === path) {
+    if (mapHrefToPath[linkHref].includes(path)) {
       link.classList.add('bottom-nav-anchor-active');
     }
   });

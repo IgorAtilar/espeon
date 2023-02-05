@@ -10,15 +10,22 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="icon" type="image/x-icon" href="public/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="src/style/main.css" />
+    <link rel="stylesheet" type="text/css" href="src/style/search.css" />
+
     <title>espeon</title>
   </head>
   <body>
     <main>
-      <header></header>
+      <header>
+        <div id="search-input-container">
+          <i class="ph-magnifying-glass"></i>
+          <input id="search-input" placeholder="Search for a card" />
+        </div>
+      </header>
       <section>
-        <h1>Help</h1>
+        <div id="cards-container"></div>
       </section>
       <footer>
         <nav id="bottom-nav">
@@ -41,7 +48,15 @@
           </ul>
         </nav>
       </footer>
+      <dialog>
+        <div id="modal-container"></div>
+      </dialog>
+      <div id="toast-container" role="dialog"></div>
+      <div id="background-container">
+        <img src="src/assets/pokeball-bg.svg" id="pokeball-bg" />
+      </div>
     </main>
-    <script type="module" src="/scripts/main"></script>
+    <script type="module" src="src/ts/main"></script>
+    <script type="module" src="src/ts/search"></script>
   </body>
 </html>

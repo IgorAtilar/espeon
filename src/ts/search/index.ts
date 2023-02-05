@@ -12,7 +12,7 @@ import {
 import { createElement, isMobile } from '../helpers/dom';
 import { removeExtraSpaces } from '../helpers/string';
 import { Card, Type } from '../entities/Card';
-import { getCards } from '../pokémonApi';
+import { getCards } from '../api';
 import { mapCardResponseToCard } from '../helpers/entities';
 import pokeballBgURL from '../../assets/pokeball-bg.svg';
 import pokeballSliceTopURL from '../../assets/pokeball-slice-top.svg';
