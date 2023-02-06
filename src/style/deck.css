@@ -53,8 +53,8 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  min-width: 44px;
+  height: 44px;
   border-radius: 50%;
   margin-top: -16px;
   font-size: 20px;
@@ -84,6 +84,46 @@ section {
   .deck-card-remove-btn {
     display: none;
   }
+}
+
+.remove-card-zone {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  align-items: center;
+  flex-direction: column;
+  height: 124px;
+  width: 100%;
+  margin-bottom: var(--footer-height);
+  padding: 12px;
+  transition: background 0.4s;
+  backdrop-filter: blur(4px);
+}
+
+.show-remove-card-zone {
+  display: flex;
+}
+
+.remove-card-zone i {
+  font-size: 48px;
+  margin-bottom: 12px;
+  transition: transform 0.4s;
+}
+
+.remove-card-zone p {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.on-dragover-remove-card-zone {
+  background: var(--drama);
+  color: var(--supernatural);
+}
+
+.on-dragover-remove-card-zone i {
+  transform: rotate(-12deg);
 }
 
 /* colorless */
