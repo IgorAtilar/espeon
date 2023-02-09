@@ -139,12 +139,14 @@ const removeDeckCardElement = ({ id, count }: DeckCard) => {
   deckCardElement?.parentNode?.removeChild(deckCardElement)
 }
 
-const removeDeckCard = (deckCard: DeckCard) => {
+const removeDeckCard = (id: string) => {
+  const deckCardElement = document.querySelector(`[data-id="${id}"]`) as HTMLElement
+  const deckCard = parseCardDataSetToCard(deckCardElement)
   removeDeckCardElement(deckCard)
   removeCardOnDeck(deckCard)
 }
 
-const createDeckCard = ({ imageURL, id, name, types, count }: DeckCard) => {
+const createDeckCard = ({ count, id, imageURL, name, types }: DeckCard) => {
   const type = types?.[0] ?? Type.Colorless
 
   const deckCardContainer = createElement({
@@ -168,6 +170,8 @@ const createDeckCard = ({ imageURL, id, name, types, count }: DeckCard) => {
       title: 'remove card',
     },
   })
+
+  deckCardRemoveButton.onclick = () => removeDeckCard(id)
 
   const deckCardRemoveIcon = createElement({
     tagName: 'i',
@@ -288,9 +292,11 @@ const initDragHandlers = () => {
 
         if (!cardBeingDragged) return
 
-        const parsedDeckCard = parseCardDataSetToCard(cardBeingDragged)
+        const { id } = cardBeingDragged.dataset
 
-        removeDeckCard(parsedDeckCard)
+        if (!id) return
+
+        removeDeckCard(id)
         removeCardZone.classList.remove('on-dragover-remove-card-zone')
       })
   }

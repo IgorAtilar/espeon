@@ -455,6 +455,8 @@ dialog {
   transform: translate(-50%, 0);
   bottom: calc(var(--footer-height) + 30px);
   z-index: var(--toast-z-index);
+  width: max-content;
+  max-width: 80%;
 }
 
 #toast-container > div {
