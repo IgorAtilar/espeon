@@ -101,15 +101,6 @@ section {
   }
 }
 
-@keyframes card-loading {
-  0% {
-    background-color: var(--adventure);
-  }
-  100% {
-    background-color: var(--action);
-  }
-}
-
 .rotation-animation {
   animation: rotation 1s infinite linear;
 }
@@ -120,9 +111,8 @@ section {
   height: 338px;
   position: relative;
   z-index: 1;
-  border: 1px solid var(--action);
+  border: 2px solid;
   border-radius: 12px;
-  animation: card-loading 1s linear infinite alternate;
 }
 
 .card > img {
@@ -130,7 +120,6 @@ section {
   width: 100%;
   height: auto;
   border: 1px solid var(--action);
-  animation: card-loading 1s linear infinite alternate;
 }
 
 #loading-container {
@@ -209,6 +198,11 @@ dialog {
 
 /* colorless */
 
+.colorless {
+  background: var(--colorless);
+  border-color: var(--colorless);
+}
+
 .modal-colorless #modal-close-button {
   background: var(--colorless);
   color: var(--darkness);
@@ -226,6 +220,11 @@ dialog {
 /* colorless */
 
 /* darkness*/
+
+.darkness {
+  background: var(--darkness);
+  border-color: var(--darkness);
+}
 
 .modal-darkness #modal-close-button {
   background: var(--darkness);
@@ -245,6 +244,11 @@ dialog {
 
 /* dragon */
 
+.dragon {
+  background: var(--dragon);
+  border-color: var(--dragon);
+}
+
 .modal-dragon #modal-close-button {
   background: var(--dragon);
   color: var(--darkness);
@@ -262,6 +266,11 @@ dialog {
 /* dragon */
 
 /* fairy */
+
+.fairy {
+  background: var(--fairy);
+  border-color: var(--fairy);
+}
 
 .modal-fairy #modal-close-button {
   background: var(--fairy);
@@ -281,6 +290,11 @@ dialog {
 
 /* fighting */
 
+.fighting {
+  background: var(--fighting);
+  border-color: var(--fighting);
+}
+
 .modal-fighting #modal-close-button {
   background: var(--fighting);
   color: var(--colorless);
@@ -298,6 +312,11 @@ dialog {
 /* fighting */
 
 /* fire */
+
+.fire {
+  background: var(--fire);
+  border-color: var(--fire);
+}
 
 .modal-fire .modal-image {
   border-color: var(--fire);
@@ -317,6 +336,11 @@ dialog {
 
 /* grass */
 
+.grass {
+  background: var(--grass);
+  border-color: var(--grass);
+}
+
 .modal-grass .modal-image {
   border-color: var(--grass);
 }
@@ -335,6 +359,11 @@ dialog {
 
 /* lightning */
 
+.lightning {
+  background: var(--lightning);
+  border-color: var(--lightning);
+}
+
 .modal-lightning .modal-image {
   border-color: var(--lightning);
 }
@@ -351,6 +380,11 @@ dialog {
 /* lightning */
 
 /* metal */
+
+.metal {
+  background: var(--metal);
+  border-color: var(--metal);
+}
 
 .modal-metal .modal-image {
   border-color: var(--metal);
@@ -370,6 +404,11 @@ dialog {
 
 /* psychic */
 
+.psychic {
+  background: var(--psychic);
+  border-color: var(--psychic);
+}
+
 .modal-psychic .modal-image {
   border-color: var(--psychic);
 }
@@ -387,6 +426,11 @@ dialog {
 /* psychic */
 
 /* water */
+
+.water {
+  background: var(--water);
+  border-color: var(--water);
+}
 
 .modal-water .modal-image {
   border-color: var(--water);

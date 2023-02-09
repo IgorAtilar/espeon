@@ -141,11 +141,12 @@ const intersectionObserver = new IntersectionObserver((entries) => {
   }
 })
 
-const createCardElement = ({ name, imageURL }: Card) => {
+const createCardElement = ({ name, imageURL, types }: Card) => {
+  const type = types?.[0] ?? Type.Colorless
   const button = createElement({
     tagName: 'button',
     attributes: {
-      class: 'card',
+      class: `card ${type.toLowerCase()}`,
       title: name,
     },
   })
