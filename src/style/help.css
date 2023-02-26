@@ -1,0 +1,126 @@
+header {
+  display: flex;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+section {
+  display: flex;
+  flex: 1;
+  padding: 12px;
+  overflow: auto;
+  overflow-x: hidden;
+  z-index: 1;
+  margin-bottom: var(--footer-height);
+  margin-top: 12px;
+  flex-direction: column;
+  align-items: center;
+}
+
+section > p {
+  display: flex;
+  flex: 1;
+  font-size: 20px;
+  overflow: auto;
+}
+
+#deck-preview-container {
+  display: flex;
+  height: min-content;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+#deck-preview-container :nth-child(1) {
+  margin-right: -40px;
+  width: 124px;
+  transform: rotate(-10deg);
+  border: 2px solid;
+  border-radius: 8px;
+}
+
+#deck-preview-container :nth-child(2) {
+  z-index: 1;
+  width: 124px;
+  border: 2px solid;
+  border-radius: 8px;
+}
+
+#deck-preview-container :nth-child(3) {
+  margin-left: -40px;
+  width: 124px;
+  transform: rotate(10deg);
+  border: 2px solid;
+  border-radius: 8px;
+}
+
+#deck-preview-container *.colorless {
+  border-color: var(--colorless);
+}
+
+#deck-preview-container *.darkness {
+  border-color: var(--darkness);
+}
+
+#deck-preview-container *.dragon {
+  border-color: var(--dragon);
+}
+
+#deck-preview-container *.fairy {
+  border-color: var(--fairy);
+}
+
+#deck-preview-container *.fighting {
+  border-color: var(--fighting);
+}
+
+#deck-preview-container *.fire {
+  border-color: var(--fire);
+}
+
+#deck-preview-container *.grass {
+  border-color: var(--grass);
+}
+
+#deck-preview-container *.lightning {
+  border-color: var(--lightning);
+}
+
+#deck-preview-container *.metal {
+  border-color: var(--metal);
+}
+
+#deck-preview-container *.psychic {
+  border-color: var(--psychic);
+}
+
+#deck-preview-container *.water {
+  border-color: var(--water);
+}
+
+#get-tips-btn {
+  border: 2px solid var(--drama);
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  max-width: 220px;
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--drama);
+  transition: 0.2s ease;
+}
+
+#get-tips-btn:hover {
+  color: var(--supernatural);
+  background: var(--drama);
+}
+
+#get-tips-btn:focus {
+  outline: 1px solid var(--drama);
+}
+
+#get-tips-btn:active {
+  outline: 1px solid var(--drama);
+}

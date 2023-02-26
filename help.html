@@ -12,13 +12,15 @@
     />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="src/style/main.css" />
+    <link rel="stylesheet" type="text/css" href="src/style/help.css" />
     <title>espeon</title>
   </head>
   <body>
     <main>
-      <header></header>
-      <section>
-        <h1>Help</h1>
+      <section id="help-container">
+        <div id="deck-preview-container"></div>
+        <p></p>
+        <button id="get-tips-btn">Get Tips</button>
       </section>
       <footer>
         <nav id="bottom-nav">
@@ -37,5 +39,6 @@
       </footer>
     </main>
     <script type="module" src="src/ts/main"></script>
+    <script type="module" src="src/ts/help"></script>
   </body>
 </html>

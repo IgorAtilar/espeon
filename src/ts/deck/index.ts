@@ -1,90 +1,10 @@
 import { fromEvent, map, tap } from 'rxjs'
-import { Card, Type } from '../entities/Card'
+import { Card, SuperType, Type } from '../entities/Card'
 import { Deck, DeckCard } from '../entities/Deck'
 import { createElement, swapElements } from '../helpers/dom'
 import { DECK_STORAGE_KEY } from '../helpers/storage'
 
 const pageLoaded$ = fromEvent(window, 'DOMContentLoaded')
-
-export const addCardToDeck = (card: Card) => {
-  const rawDeck = localStorage.getItem(DECK_STORAGE_KEY)
-  const hasSavedDeck = typeof rawDeck === 'string' && !(rawDeck.length === 0)
-
-  if (!hasSavedDeck) {
-    const cards = new Map()
-    cards.set(card.id, { ...card, count: 1 })
-    localStorage.setItem(DECK_STORAGE_KEY, JSON.stringify({ cards: Array.from(cards.entries()) }))
-    return
-  }
-
-  const deck = JSON.parse(rawDeck) as Deck
-
-  const { cards } = deck
-
-  const parsedCards = new Map(cards)
-
-  const savedCard = parsedCards.get(card.id)
-  const hasSavedCard = !!savedCard?.id
-
-  if (!hasSavedCard) {
-    const newCards = parsedCards.set(card.id, { ...card, count: 1 })
-
-    localStorage.setItem(
-      DECK_STORAGE_KEY,
-      JSON.stringify({ cards: Array.from(newCards.entries()) })
-    )
-
-    return
-  }
-
-  const { count } = savedCard
-
-  const newCards = parsedCards.set(card.id, { ...card, count: count + 1 })
-
-  localStorage.setItem(DECK_STORAGE_KEY, JSON.stringify({ cards: Array.from(newCards.entries()) }))
-}
-
-export const removeCardOnDeck = (card: Card) => {
-  const rawDeck = localStorage.getItem(DECK_STORAGE_KEY)
-  const hasSavedDeck = typeof rawDeck === 'string' && !(rawDeck.length === 0)
-
-  if (!hasSavedDeck) {
-    return
-  }
-
-  const deck = JSON.parse(rawDeck) as Deck
-
-  const { cards } = deck
-
-  const parsedCards = new Map(cards)
-
-  const savedCard = parsedCards.get(card.id)
-  const hasSavedCard = !!savedCard?.id
-
-  if (!hasSavedCard) {
-    return
-  }
-
-  const { count } = savedCard
-
-  if (count - 1 > 0) {
-    const newCards = parsedCards.set(card.id, { ...card, count: count - 1 })
-
-    localStorage.setItem(
-      DECK_STORAGE_KEY,
-      JSON.stringify({ cards: Array.from(newCards.entries()) })
-    )
-
-    return
-  }
-
-  parsedCards.delete(card.id)
-
-  localStorage.setItem(
-    DECK_STORAGE_KEY,
-    JSON.stringify({ cards: Array.from(parsedCards.entries()) })
-  )
-}
 
 export const setDeckCards = (deckCards: Deck['cards']) => {
   localStorage.setItem(DECK_STORAGE_KEY, JSON.stringify({ cards: Array.from(deckCards.entries()) }))
@@ -105,8 +25,68 @@ export const getDeckCards = () => {
   return new Map(cards)
 }
 
+export const addCardToDeck = (card: Card) => {
+  const deckCards = getDeckCards()
+  const hasDeckCards = deckCards.size
+
+  if (!hasDeckCards) {
+    const newDeckCards = new Map()
+    newDeckCards.set(card.id, { ...card, count: 1 })
+
+    setDeckCards(newDeckCards)
+    return
+  }
+
+  const savedCard = deckCards.get(card.id)
+  const hasSavedCard = !!savedCard?.id
+
+  if (!hasSavedCard) {
+    const newCards = deckCards.set(card.id, { ...card, count: 1 })
+
+    setDeckCards(newCards)
+
+    return
+  }
+
+  const { count } = savedCard
+
+  const newCards = deckCards.set(card.id, { ...card, count: count + 1 })
+
+  setDeckCards(newCards)
+}
+
+export const removeCardOnDeck = (card: Card) => {
+  const deckCards = getDeckCards()
+  const hasSavedDeck = deckCards.size
+
+  if (!hasSavedDeck) {
+    return
+  }
+
+  const savedCard = deckCards.get(card.id)
+  const hasSavedCard = !!savedCard?.id
+
+  if (!hasSavedCard) {
+    return
+  }
+
+  const { count } = savedCard
+
+  if (count - 1 > 0) {
+    const newCards = deckCards.set(card.id, { ...card, count: count - 1 })
+
+    setDeckCards(newCards)
+
+    return
+  }
+
+  deckCards.delete(card.id)
+
+  setDeckCards(deckCards)
+}
+
 const parseCardDataSetToCard = (cardElement: HTMLElement) => {
-  const { id, imageurl, name, types = '', count } = cardElement.dataset
+  const { id, imageurl, name, types = '', count, supertype } = cardElement.dataset
 
   const parsedCard: DeckCard = {
     id: id ?? '',
@@ -114,6 +94,7 @@ const parseCardDataSetToCard = (cardElement: HTMLElement) => {
     name: name ?? '',
     types: JSON.parse(types) ?? [],
     count: Number(count),
+    supertype: supertype as SuperType,
   }
   return parsedCard
 }
@@ -146,7 +127,7 @@ const removeDeckCard = (id: string) => {
   removeCardOnDeck(deckCard)
 }
 
-const createDeckCard = ({ count, id, imageURL, name, types }: DeckCard) => {
+const createDeckCard = ({ count, id, imageURL, name, types, supertype }: DeckCard) => {
   const type = types?.[0] ?? Type.Colorless
 
   const deckCardContainer = createElement({
@@ -157,6 +138,7 @@ const createDeckCard = ({ count, id, imageURL, name, types }: DeckCard) => {
       'data-id': id,
       'data-name': name,
       'data-types': JSON.stringify(types),
+      'data-supertype': supertype,
       'data-imageurl': imageURL,
       'data-count': String(count),
     },
