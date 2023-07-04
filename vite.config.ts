@@ -1,7 +1,7 @@
-import { resolve } from 'path';
-import { defineConfig } from 'vite';
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
 
-const outDir = resolve(__dirname, 'dist');
+const outDir = resolve(__dirname, 'dist')
 
 export default defineConfig({
   base: '/espeon/',
@@ -9,10 +9,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
-        help: 'help.html',
         deck: 'deck.html',
       },
     },
     outDir,
   },
-});
+})

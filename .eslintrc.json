@@ -19,5 +19,6 @@
     "@typescript-eslint/promise-function-async": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/no-confusing-void-expression": "off"
-  }
+  },
+  "ignorePatterns": ["vite.config.ts"]
 }
